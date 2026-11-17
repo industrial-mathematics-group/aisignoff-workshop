@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Cheat sheet: GitHub and AI signoff</title>
+<style>
+@page { size: A4; margin: 9mm 10mm; }
+* { box-sizing: border-box; }
+body { font-family: "DejaVu Sans", "Helvetica Neue", Arial, sans-serif; font-size: 8.1pt; line-height: 1.32; color: #1b1f24; margin: 0; }
+h1 { font-size: 16pt; white-space: nowrap; margin: 0; letter-spacing: -0.2pt; }
+.sub { color: #57606a; font-size: 8pt; margin: 1mm 0 2.5mm; }
+header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1.6pt solid #1f6feb; padding-bottom: 1.5mm; margin-bottom: 2.5mm; }
+header .url { font-size: 7.4pt; flex: 0 0 62mm; color: #57606a; text-align: right; }
+h2 { font-size: 9pt; margin: 0 0 1.2mm; color: #0b4fb3; text-transform: uppercase; letter-spacing: 0.4pt; }
+.box { border: 0.7pt solid #d0d7de; border-radius: 2mm; padding: 2mm 2.5mm; margin-bottom: 2.4mm; break-inside: avoid; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3mm; }
+table { border-collapse: collapse; width: 100%; }
+td, th { vertical-align: top; padding: 0.6mm 1mm; text-align: left; }
+.words td:first-child { font-weight: bold; white-space: nowrap; width: 26mm; }
+.words tr + tr td { border-top: 0.4pt solid #eaeef2; }
+ol, ul { margin: 0; padding-left: 4.2mm; }
+li { margin: 0.4mm 0; }
+.levels th, .levels td { border: 0.5pt solid #d0d7de; padding: 1mm 1.2mm; }
+.levels thead th { background: #f6f8fa; text-align: center; font-size: 8pt; }
+.levels td.ax { font-weight: bold; width: 30mm; }
+.levels td.ax b { font-size: 11pt; display: inline-block; width: 5mm; }
+.G td.ax b { color: #8250df; } .H td.ax b { color: #1a7f37; } .A td.ax b { color: #bc4c00; }
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4mm; margin-top: 1.5mm; }
+.key { background: #fff8c5; border-color: #d4a72c; }
+code { font-family: "DejaVu Sans Mono", monospace; font-size: 7.3pt; background: #f6f8fa; padding: 0 0.6mm; border-radius: 0.6mm; }
+blockquote { margin: 1mm 0; padding: 1.2mm 2mm; border-left: 2pt solid #1f6feb; background: #f6f8fa; font-family: "DejaVu Sans Mono", monospace; font-size: 7.2pt; }
+.k { font-weight: bold; }
+footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; padding-top: 1.2mm; display: flex; justify-content: space-between; }
+</style></head><body>
+<header>
+  <div><h1>Cheat sheet: GitHub and AI signoff</h1>
+  <div class="sub">Everything in the web browser. Workshop of 19 November 2026.</div></div>
+  <div class="url">Workshop<br><b>github.com/industrial-mathematics-group/aisignoff-workshop</b></div>
+</header>
+
+<div class="grid">
+  <div class="box">
+    <h2>Words</h2>
+    <table class="words">
+      <tr><td>Repository</td><td>Shared project folder that keeps every version of every file</td></tr>
+      <tr><td>main</td><td>The official version of the repository</td></tr>
+      <tr><td>Commit</td><td>One saved version, with a note: what changed, who, when</td></tr>
+      <tr><td>Branch</td><td>Your own working copy; doesn't disturb <code>main</code></td></tr>
+      <tr><td>Pull request (PR)</td><td>"Please take my changes into main": change, comments, checks</td></tr>
+      <tr><td>Merge</td><td>The changes go into <code>main</code></td></tr>
+      <tr><td>Issue</td><td>A note, a question or a request</td></tr>
+      <tr><td>Release</td><td>A named, frozen version (<code>v1.0.0</code>); with Zenodo it gets a DOI</td></tr>
+    </table>
+  </div>
+  <div class="box">
+    <h2>Change something, in the browser</h2>
+    <ol>
+      <li><span class="k">Edit:</span> open the file → pencil. <span class="k">New:</span> <i>Add file → Create new file</i>. <span class="k">Upload:</span> <i>Add file → Upload files</i>.</li>
+      <li><b>Commit changes…</b> → <b>Create a new branch for this commit and start a pull request</b> → <b>Propose changes</b>.</li>
+      <li><b>Create pull request</b>.</li>
+      <li>The checks turn red: <b>tick the AI declaration</b> in the description (you can tick right there).</li>
+      <li>Checks green → <b>Merge pull request</b> → <b>Confirm merge</b> → <b>Delete branch</b>.</li>
+    </ol>
+    <h2 style="margin-top:2mm">Red check?</h2>
+    Click <b>Details</b> on the check. Usually: no or two G boxes · G1–G3 without a model · only H0 where H1 is required · A2/A3 without report or findings line · page not reloaded.
+  </div>
+</div>
+
+<div class="box key">
+  <h2>The AI declaration: G · H · A</h2>
+  <table class="levels">
+    <thead><tr><th></th><th>0</th><th>1</th><th>2</th><th>3</th></tr></thead>
+    <tr class="G"><td class="ax"><b>G</b>How much did AI generate?</td><td>Nothing, I did it myself</td><td>AI <b>helped</b>: suggested, polished, structured</td><td>AI <b>wrote big parts</b>; I steered and edited</td><td>An AI agent did it <b>mostly on its own</b></td></tr>
+    <tr class="H"><td class="ax"><b>H</b>How did a human check it?</td><td>Looked at the whole: does what was asked, plausible</td><td><b>Tried it</b>: reran or recomputed key results, read the important parts</td><td><b>Every line</b>: every sentence, number, formula, reference</td><td><b>Independently confirmed</b>: another method, or a second person</td></tr>
+    <tr class="A"><td class="ax"><b>A</b>Did an independent AI check it?</td><td>No (the chat that wrote it checking itself doesn't count)</td><td>A <b>fresh AI session</b> checked it, without the original chat</td><td>A <b>different, capable model</b> checked it; report committed</td><td>Different model with <b>new evidence</b> (tests, recomputation) + report</td></tr>
+  </table>
+  <div class="rules">
+    <ul>
+      <li><b>G:</b> tick exactly one, the highest of any substantial part. G1–G3: tick the model(s) too.</li>
+      <li><b>H, A:</b> tick the highest level you actually did (H2 includes H0, H1). Nothing under A = A0.</li>
+      <li><b>You are responsible</b> for what you merge, whoever or whatever wrote it.</li>
+    </ul>
+    <ul>
+      <li><b>A2/A3 only:</b> name model + report, and fill <code>AI-Review-Findings:</code> with the worst finding (<code>none</code> · <code>trivial</code> · <code>minor</code> · <code>major</code> · <code>critical</code>). Major/critical: fix and review again first.</li>
+      <li><b>Minimums:</b> a repository can require more (<code>[policy]</code> in its <code>SIGNOFF.toml</code>, e.g. at least H1).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="box">
+    <h2>IMGAgent: ask and sign off</h2>
+    In a new issue or a comment (not in a code box); folders separated by commas:
+    <blockquote>@IMGAgent ask notes, analysis<br>When does the coffee reach 60 °C?</blockquote>
+    <blockquote>@IMGAgent signoff<br>I checked results/summary.md line by line against the data. Please record H2, reviewer Jane Doe.</blockquote>
+    <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time.
+    Without AI: <i>New issue → Signoff: declare or attest files</i>. <code>@IMGAgent help</code>
+  </div>
+  <div class="box">
+    <h2>Releases and DOIs (Zenodo)</h2>
+    <ol>
+      <li><b>Once:</b> log in at zenodo.org with GitHub → <i>GitHub</i> → <b>Sync now</b> → switch the repository <b>On</b>; add a <code>CITATION.cff</code>.</li>
+      <li><b>Each release:</b> <i>Releases → Draft a new release</i> → new tag <code>v1.0.0</code> → <b>Publish release</b>.</li>
+      <li>Zenodo archives it and mints a DOI: <b>version DOI</b> (cite in papers) and <b>concept DOI</b> (always the newest; README badge).</li>
+      <li>Practise on <b>sandbox.zenodo.org</b>: real DOIs can't be deleted.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="box">
+  <h2>Golden rules</h2>
+  One change per pull request · never put unpublished data, personal data or passwords into a public repository or an AI tool ·
+  when unsure, declare <b>more</b> AI generation and <b>less</b> review rather than the other way round, and say why in the description.
+</div>
+
+<footer>
+  <span>Full definitions: AI policy in <b>github.com/industrial-mathematics-group/.github</b> (CONTRIBUTING.md) · Tool: <b>aisignoff</b></span>
+  <span>Optional desktop app: GitHub Desktop</span>
+</footer>
+</body></html>
