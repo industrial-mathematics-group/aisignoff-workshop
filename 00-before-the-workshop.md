@@ -10,7 +10,13 @@ Please do this before Thursday. It takes five minutes. If something doesn't work
 - Send your GitHub user name to Pascal. You'll get an invitation to the organisation
   **industrial-mathematics-group** by e-mail: **accept it** (it expires after 7 days).
 
-## 2. Create your workshop repository
+## Choose One:
+### 2a. Select your own repository to set up
+
+1. Check if the repository is already in our organization
+2. If not: Go to **Settings** → **General** → **Transfer ownership** (Danger Zone on the bottom)
+
+### 2b. Create your workshop repository
 
 1. Go to <https://github.com/organizations/industrial-mathematics-group/repositories/new>
    (or **+** at the top right → **New repository**, and choose **industrial-mathematics-group** as the owner).
