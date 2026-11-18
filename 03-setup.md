@@ -61,7 +61,7 @@ Workflows are the little robots. The group has ready-made ones. Install three of
 | Workflow | What it does |
 |---|---|
 | PR-signoff | Checks the ticked declaration of every pull request; sets the `ai:G*`, `human:H*`, `ai-review:A*` labels |
-| File-signoff | Checks that every file (every line) is declared; writes the report; without `SIGNOFF.toml` it opens a pull request to set it up |
+| File-signoff | Checks that every file (every line) is declared; writes the report (and, switched on in part 5, publishes it on GitHub Pages); without `SIGNOFF.toml` it opens a pull request to set it up |
 | Signoff-Badges | Makes badges from the declarations of merged pull requests |
 
 ✅ **Check:** **Actions** lists runs for File-signoff and Signoff-Badges. File-signoff has a yellow warning

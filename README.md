@@ -26,7 +26,7 @@ Pascal does every step at the same time on this repository, on the projector.
 |---|---|
 | `00-…` to `07-…` | The workshop, one page per part |
 | [`sample-project/`](sample-project/) and [`sample-project.zip`](sample-project.zip) | A tiny made-up research project (coffee cooling) that you put into your repository: something to declare and to ask about |
-| [`templates/`](templates/) | Files to copy into your repository: the Pages and release workflows, a `CITATION.cff` |
+| [`templates/`](templates/) | Files to copy into your repository: the release workflow, a `CITATION.cff` |
 | `cheat-sheet.*`, `maintainer-cheat-sheet.*` | The two cheat sheets |
 | [`facilitator-guide.md`](facilitator-guide.md) | For whoever runs the session |
 
