@@ -37,8 +37,10 @@ in the sidebar, and Zenodo takes the title and authors from it.
    **Claude Opus**, **H2**, **A0**. Merge.
 
 Optional, the same way: [`templates/signoff-release.yml`](templates/signoff-release.yml) as
-`.github/workflows/signoff-release.yml` attaches the aisignoff report to every release (declare it like the
-Pages workflow in part 5).
+`.github/workflows/signoff-release.yml` attaches the aisignoff report to every release. Declare it as a copied
+file keeps its origin: it comes from the aisignoff examples, made by Claude Opus and checked by a new session,
+so **G3**, **Claude Opus**, **A1**, and your human review (**H0** if you only skimmed it, **H1** if you read the
+important parts).
 
 ✅ **Check:** the sidebar of your repository's front page shows **Cite this repository**.
 

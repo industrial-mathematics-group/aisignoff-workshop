@@ -87,7 +87,7 @@ declare what really happened (no role-play story). Watch for: step D's `**` defa
 | 0:55 | [3 Set up](03-setup.md) E–F | The red→green moment in F is the payoff: give it time |
 | 1:10 | Break | |
 | 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time |
-| 1:40 | [5 Pages](05-pages.md) | While the Pages run builds: explain the review gap |
+| 1:40 | [5 Pages](05-pages.md) | Two commented lines in each place: check indentation on screens. While the pages job runs: explain the review gap |
 | 1:55 | [6 Zenodo](06-zenodo.md) | Sandbox only. Archiving takes a few minutes: start the release, then talk |
 | 2:15 | [7.1 Basic agent workflow](07-advanced.md#71--a-basic-agent-workflow-claude-on-the-web) | Live: task → pull request → inspect → merge. About 15 min |
 | 2:30 | [7.2 Showcase](07-advanced.md#72--showcase-an-advanced-setup) | Demonstration only, no setup. About 15 min |
@@ -107,7 +107,7 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
   requests only" is the safe way out. Come back to it in 7.2 (an agent as its own GitHub App can't bypass).
 - **4:** IMGAgent writes declarations, it doesn't decide them: the person checks the diff and ticks. Each
   request costs the group a few cents.
-- **5:** the report is public with the text of each file. One Pages site per repository.
+- **5:** the report is public with the text of each file. One Pages site per repository, and `pages: true` replaces it: not for repositories with a docs site.
 - **6:** version DOI for a paper, concept DOI for the badge. Real DOIs are forever.
 - **7.1:** go through *Files changed* slowly, comment on one line, let the agent answer with a new commit.
   Then tick an honest human review: "the AI wrote it" isn't one.
@@ -127,7 +127,9 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
 | IMGAgent doesn't answer | Not installed on that repository (check *Settings → GitHub Apps*), the command is inside a code box or quote, or no folder was named. `@IMGAgent help` tests it |
 | IMGAgent's signoff refuses | No `SIGNOFF.toml` on `main` yet (step D not merged), or a path that doesn't exist on `main` |
 | Second signoff pull request shows "This branch has conflicts" | Two requests open at once. Merge one, then ask again with `@IMGAgent signoff` in the second issue, or **Resolve conflicts**: keep both entries, delete the `<<<<<<<`, `=======`, `>>>>>>>` lines |
-| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the Pages run hasn't finished |
+| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the pages job of File-signoff hasn't finished; the report is under `/aisignoff/` |
+| No pages job in File-signoff | `pages: true` still commented out, or `with:` not lined up with `uses:` (the run then fails with an invalid workflow) |
+| pages job red: "Couldn't deploy" | Pages source not *GitHub Actions*, or `pages: write` / `id-token: write` still commented out |
 | Zenodo doesn't list the repository | Organisation access for Zenodo (Sandbox) not granted; **Sync now** after granting |
 | Zenodo shows no new record | The release was saved as a draft, or the repository was switched on after the release. Publish a new release (`v0.1.1`) |
 

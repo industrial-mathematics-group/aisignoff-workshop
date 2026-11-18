@@ -33,17 +33,24 @@ The templates are thin callers of the reusable workflows in `.github`; copying b
 | Workflow file | What it does | Check name to require |
 |---|---|---|
 | `pr-signoff.yml` | Checks the ticked AI declaration of every PR into `main` (with `SIGNOFF.toml`: also every file/line of the merge preview, under the base branch's `[policy]`); sets `ai:G*`, `human:H*`, `ai-review:A*` labels | **`pr-signoff / check`** |
-| `file-signoff.yml` | `aisignoff lint` on push, PR, merge queue; folder tree in the job summary, HTML report as artifact; file badges on `main`; **opens a setup PR if there is no `SIGNOFF.toml`** | **`file-signoff / lint`** |
+| `file-signoff.yml` | `aisignoff lint` on push, PR, merge queue; folder tree in the job summary, HTML report as artifact; file badges on `main`; **opens a setup PR if there is no `SIGNOFF.toml`**; optionally the report on Pages | **`file-signoff / lint`** |
 | `signoff-badges.yml` | Badges of the declarations of merged PRs | none |
 | `zensical-docs.yml` | Builds `docs/` + `zensical.toml` on PRs that touch them, deploys to Pages from `main` | none (path-filtered, see §4) |
 
 Useful inputs (`with:` in the caller): `weight: lines` (File-signoff badges by lines; the Julia repos and the
 playground use it), `aisignoff-version` (pin a different release than the org default `1.0.0rc8`),
-`setup: false`, `setup-recheck`, `setup-history`, `allow-policy-change: admin,maintain` (PR-signoff),
+`setup: false`, `setup-recheck`, `setup-history`, `pages: true` and `pages-path` (File-signoff, below),
+`allow-policy-change: admin,maintain` (PR-signoff),
 `zensical-version`, `deploy: false`.
 
 The File-signoff template's caller has `pull-requests: write`; keep it, or the setup PR can't be opened (the
 branch is still pushed and the job summary links to a prefilled PR).
+
+**The report on Pages.** `pages: true` makes File-signoff deploy the HTML report to GitHub Pages on pushes to
+`main`, at `https://industrial-mathematics-group.github.io/<repo>/aisignoff/` (`pages-path`, default `/aisignoff/`;
+`/` for the root, which otherwise redirects to it). Needs *Settings → Pages → Source: GitHub Actions* and
+`pages: write` + `id-token: write` in the caller (commented out in the template). A deployment replaces the whole
+site: repositories with a docs site keep it off and use §6.
 
 ## 3. `SIGNOFF.toml`
 
@@ -215,5 +222,6 @@ updates every repository at once: read the changelog for **Breaking** first. Kee
 | PR-signoff fails on a `SIGNOFF.toml` change | Policy-type change: commit to `main` directly, or `allow-policy-change` |
 | Badges show "no declarations yet" forever | Merge message not set to *title and description*, or `badges` branch protected |
 | Docs build fails "No zensical.toml" | `@IMGAgent make docs`, or `zensical new` |
-| Pages 404 | *Settings → Pages → Source: GitHub Actions* |
+| Pages 404 | *Settings → Pages → Source: GitHub Actions*; File-signoff's report is under `/aisignoff/` |
+| File-signoff `pages` job: "Couldn't deploy" | Pages source, or `pages: write` / `id-token: write` missing in the caller |
 | Required check never starts | It's path-filtered or renamed: required names are `<caller job> / <job>` |
