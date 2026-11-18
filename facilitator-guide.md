@@ -101,7 +101,10 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
 - **3 C, File-signoff last:** it reacts to the push of its own file by opening the setup pull request.
 - **3 D:** the pull request was opened by a bot, so its checks start only with the first push to the branch
   (the edit). `Responsible person:` makes the human who triggered it responsible.
-- **3 E:** checks can only be required once they have run, which is why protection comes after D.
+- **3 E:** checks can only be required once they have run, which is why protection comes after D. Leave the
+  bypass list empty and say why: on the playground, Claude with your admin login pushed straight to `main`
+  because *Repository admin* was an "always" bypass, and a bypass also lifts force-push protection. "For pull
+  requests only" is the safe way out. Come back to it in 7.2 (an agent as its own GitHub App can't bypass).
 - **4:** IMGAgent writes declarations, it doesn't decide them: the person checks the diff and ticks. Each
   request costs the group a few cents.
 - **5:** the report is public with the text of each file. One Pages site per repository.

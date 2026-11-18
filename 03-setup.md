@@ -108,7 +108,7 @@ From now on, changes reach `main` only through checked pull requests.
 **Settings → Rules → Rulesets → New ruleset → New branch ruleset:**
 
 1. **Ruleset name:** `main`. **Enforcement status:** Active.
-2. **Bypass list → Add bypass → Repository admin** (so you can still fix things in an emergency).
+2. **Bypass list: leave it empty.** (Why, below.)
 3. **Target branches → Add target → Include default branch.**
 4. Rules (keep **Restrict deletions** and **Block force pushes** ticked):
    - **Require a pull request before merging.** Required approvals: **0** (you're alone in your repository).
@@ -118,7 +118,18 @@ From now on, changes reach `main` only through checked pull requests.
 5. **Create.**
 
 ✅ **Check:** on the front page, try the pencil on any file: the commit dialog no longer offers to commit to
-`main` directly (as admin you may see a "bypass" option: don't use it).
+`main` directly.
+
+> **Why no bypass, not even for yourself?** Whoever is on the bypass list can push straight to `main`, without a
+> pull request and without checks. That includes every tool and AI agent that works **with your account**: in
+> a test on the playground, Claude, acting with an admin's login, pushed directly to `main` because the
+> *Repository admin* role was on the bypass list. And a bypass covers **every rule of its ruleset**, so it also
+> switches off *Block force pushes* and *Restrict deletions* for you.
+>
+> If you really want a way out (a pull request whose checks can't pass, such as a change to `[policy]`): add
+> *Repository admin* with the mode **For pull requests only** instead of *Always*. Then you can merge such a pull
+> request anyway, but never push to `main` directly. Better still, keep *Block force pushes* and
+> *Restrict deletions* in a second ruleset with no bypass at all.
 
 ## F · Your first declared pull request
 
