@@ -16,6 +16,13 @@ Please do this before Thursday. It takes five minutes. If something doesn't work
 1. Check if the repository is already in our organization
 2. If not: Go to **Settings** → **General** → **Transfer ownership** (Danger Zone on the bottom)
 
+Good to know about your own repository:
+
+- It should be **public** for parts 5 and 6 (GitHub Pages and Zenodo); everything else works in a private one too.
+- After a transfer, the old address redirects to the new one, and links keep working.
+- If it already has workflows, a pull request template or issue templates of its own, tell Pascal beforehand.
+- You'll declare **your real files** instead of the example project, so think about how they were made.
+
 ### 2b. Create your workshop repository
 
 1. Go to <https://github.com/organizations/industrial-mathematics-group/repositories/new>
