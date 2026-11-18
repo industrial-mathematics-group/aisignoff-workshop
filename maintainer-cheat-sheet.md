@@ -103,8 +103,16 @@ delete `SIGNOFF.toml`): commit such changes to `main` directly (with `undeclared
 - **Don't require `docs / build`** (or any other path-filtered check): it doesn't run on PRs that don't touch
   `docs/`, and those PRs would wait forever.
 - **Block force pushes**, **Restrict deletions**.
-- **Bypass list:** *Repository admin* (or *Maintain*), so that policy changes can be committed to `main`
-  directly. Without a bypass, use `allow-policy-change` instead.
+- **Bypass list: empty** if `main` must really be protected. A bypass actor can push to `main` directly, and so
+  can every tool or AI agent acting with that person's account (seen in a test: Claude with an admin's login
+  pushed straight to `main`). A bypass also lifts **every** rule of its ruleset, force-push and deletion
+  protection included.
+- Need a way out for PRs whose checks can't pass (policy changes)? Add *Repository admin* in the mode **For pull
+  requests only**, not *Always*: merging such a PR then works, direct pushes don't. Keep *Block force pushes* and
+  *Restrict deletions* in a second ruleset without bypass. For policy changes, `allow-policy-change:
+  admin,maintain` on PR-signoff is the alternative to any bypass.
+- Agents that work as their own **GitHub App** (IMGAgent, or the agent-sandbox `github-app` add-on) have their
+  own identity: they aren't on the bypass list, so they can't skip the rules.
 
 ## 5. README badges
 
