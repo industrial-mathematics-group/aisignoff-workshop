@@ -16,6 +16,9 @@ ends with ✅ **Check**: what you should see before you go on. Pascal does the s
 
 ## A · Put the example project in
 
+**Brought your own repository?** Skip this step: you'll work with your own files. Where the steps below
+say *the example*, think of your files and declare what really happened.
+
 1. In this workshop repository, open [`sample-project.zip`](sample-project.zip) and click the **download**
    icon (top right of the file view). Unzip it on your computer.
 2. Open your repository. On the empty "Quick setup" page click **uploading an existing file**.
@@ -72,7 +75,8 @@ Workflows are the little robots. The group has ready-made ones. Install three of
 1. **Pull requests** tab → **Set up aisignoff (SIGNOFF.toml with TODOs to fill in)**. Read its description.
 2. **Files changed** → on `SIGNOFF.toml` click **⋯ → Edit file**.
 3. At the end, replace the `TODO`s with what is true for most of the files (see
-   [HOW-THIS-WAS-MADE.md](sample-project/HOW-THIS-WAS-MADE.md)), with your name:
+   [HOW-THIS-WAS-MADE.md](sample-project/HOW-THIS-WAS-MADE.md); for your own repository, what is true for most
+   of your files), with your name:
 
    ```toml
    # Default for everything

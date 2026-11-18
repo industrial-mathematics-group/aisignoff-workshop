@@ -12,7 +12,11 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
 ### A week ahead: participants
 
 - [ ] Send the link to [Before the workshop](00-before-the-workshop.md): account, user name to you, accept the
-      invitation, create `workshop-<name>` (public, empty) in the organisation, Zenodo Sandbox login.
+      invitation, create `workshop-<name>` (public, empty) in the organisation **or** transfer their own
+      repository into it, Zenodo Sandbox login.
+- [ ] Ask who brings their own repository, and look at those beforehand: existing workflows, a PR template
+      or `.github/ISSUE_TEMPLATE/` of their own (then the signoff issue form must be copied in, see the
+      maintainer cheat sheet §7), private (no Pages or Zenodo), or already a `SIGNOFF.toml`.
 - [ ] Invite everyone to **industrial-mathematics-group** as members.
 
 ### Organisation settings (admin)
@@ -31,7 +35,8 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
 ### The day before: IMGAgent and the repositories
 
 - [ ] *Organisation settings → GitHub Apps → IMGAgent → Configure → Repository access:* add every
-      `workshop-<name>` repository and `aisignoff-workshop` (or choose **All repositories**).
+      `workshop-<name>` repository, the transferred own repositories and `aisignoff-workshop` (or choose
+      **All repositories**).
 - [ ] Check the list of `workshop-*` repositories against the participants; chase the missing ones.
 - [ ] Dry run: create `workshop-test`, go through parts 3 to 6 end to end with the pages open, then delete it.
       It shows how long each step takes with the current GitHub UI.
@@ -53,6 +58,24 @@ step by step with the participants. Differences from their repositories:
 - **Part 4:** for the signoff demo, use something true, e.g. *"The cheat sheet PDFs were made by Claude Opus 5.5
   on its own; I checked them against the Markdown (H1)"*, or an attestation of a page you read line by line.
 
+### Own repositories in the session
+
+Participants who bring a real repository follow the same steps with their own files: they skip step 3 A, and
+declare what really happened (no role-play story). Watch for: step D's `**` default must be true for most of
+*their* files, existing workflows may add required checks of their own, and a private repository stops at part 4.
+
+### The advanced part
+
+- [ ] **7.1:** claude.ai connected to your GitHub account, a Claude project with the demo repository (this one
+      after the live setup, or one prepared beforehand), and the Claude GitHub App installed on it. Prepare the
+      task text (the one on the page asks it to tick its own part of the AI declaration). Agents can be slow on
+      a live connection: have a pull request from a dry run open in a second tab as a fallback.
+- [ ] **7.2:** start a real run beforehand (cluster jobs take longer than the session), so you can show the
+      sandbox working, the job list on the cluster, and a finished pull request from the same setup. Keep
+      tokens, keys, `.env` files and the cluster's account details off the projector.
+- [ ] The message to land in both: whatever the agent and wherever it runs, the result is a pull request that
+      a person inspects, declares and merges.
+
 ## Timing
 
 | Time | Part | Notes |
@@ -66,7 +89,8 @@ step by step with the participants. Differences from their repositories:
 | 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time |
 | 1:40 | [5 Pages](05-pages.md) | While the Pages run builds: explain the review gap |
 | 1:55 | [6 Zenodo](06-zenodo.md) | Sandbox only. Archiving takes a few minutes: start the release, then talk |
-| 2:15 | [7 Advanced](07-advanced.md) | |
+| 2:15 | [7.1 Basic agent workflow](07-advanced.md#71--a-basic-agent-workflow-claude-on-the-web) | Live: task → pull request → inspect → merge. About 15 min |
+| 2:30 | [7.2 Showcase](07-advanced.md#72--showcase-an-advanced-setup) | Demonstration only, no setup. About 15 min |
 
 Short on time: skip step F's "break it on purpose", the optional parts of 4, and step 4 of part 6.
 
@@ -82,6 +106,10 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
   request costs the group a few cents.
 - **5:** the report is public with the text of each file. One Pages site per repository.
 - **6:** version DOI for a paper, concept DOI for the badge. Real DOIs are forever.
+- **7.1:** go through *Files changed* slowly, comment on one line, let the agent answer with a new commit.
+  Then tick an honest human review: "the AI wrote it" isn't one.
+- **7.2:** the sandbox is why the agent may act without asking at every step; the pull request is why that is
+  still safe for the repository. Point to the comparison table at the end of the page.
 
 ## What tends to go wrong
 

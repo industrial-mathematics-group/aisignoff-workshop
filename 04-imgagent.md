@@ -22,6 +22,9 @@ Not the whole repository (`.`), no wildcards. A command inside a grey code box o
 
 ## Exercise 1 · Ask your repository (5 min)
 
+*Own repository:* ask about your own folders, and in exercise 2 declare the folders that were made differently
+from the default.
+
 1. **Issues → New issue** (choose **Blank issue** if GitHub offers forms). Title: `Questions about the coffee`.
 2. As the text, write (the question may go on the next line):
 
