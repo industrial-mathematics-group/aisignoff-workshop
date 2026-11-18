@@ -36,7 +36,7 @@ File-signoff writes the report on every run already; one switch makes it publish
    ```
 
    The other lines stay commented out. `pages-path` moves the report elsewhere in the site, for example
-   `pages-path: /` for the front page; the default `/aisignoff/` is what we use today.
+   `pages-path: /` for the front page; the default `/signoff/` is what we use today.
 4. **Commit changes… → Create a new branch … and start a pull request → Propose changes → Create pull request.**
 5. Declare it: you changed the lines yourself, following this page, so **G0**, **A0**, and **H1** (you read what
    you changed).
@@ -47,8 +47,8 @@ after lint). Its summary shows the address of the report.
 
 ## Step 3 · Look at your report (5 min)
 
-Open `https://industrial-mathematics-group.github.io/workshop-jane-doe/aisignoff/` (with your repository's name; the
-address without `aisignoff/` leads there too). To have the link on your front page: the **⚙** next to *About* →
+Open `https://www.industrial-mathematics.org/workshop-jane-doe/signoff/` (with your repository's name; the
+address without `signoff/` leads there too). To have the link on your front page: the **⚙** next to *About* →
 tick **Use your GitHub Pages website** → **Save**.
 
 - **Sunburst:** click a folder to zoom in, the centre to go back.
