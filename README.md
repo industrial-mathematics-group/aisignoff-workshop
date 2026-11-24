@@ -1,6 +1,6 @@
 # Workshop: GitHub and AI signoff
 
-**Thursday, 19 November 2026 · Industrial Mathematics Group · everything in the web browser**
+**Friday, 27 November 2026 · Industrial Mathematics Group · everything in the web browser · aisignoff 0.20.1**
 
 In this workshop you set up **your own repository** the way the group's repositories are set up (a fresh
 workshop repository, or a real one of yours that you bring along): the AI signoff checks, the protection of `main`, the IMGAgent assistant, a published report and a DOI from Zenodo.
@@ -10,9 +10,9 @@ Pascal does every step at the same time on this repository, on the projector.
 |---|---|---|
 | 0 | [Before the workshop](00-before-the-workshop.md) | Create an empty repository, or bring your own. **Please do this beforehand** |
 | 1 | [GitHub in five words](01-git-and-github.md) | Repository, commit, branch, pull request, merge, as pictures |
-| 2 | [AI signoff in plain words](02-ai-signoff.md) | Why we declare AI use, the G · H · A levels, who is responsible |
+| 2 | [AI signoff in plain words](02-ai-signoff.md) | Why we declare AI use, the G · H · A levels and the review findings, who is responsible |
 | 3 | [Set up your repository](03-setup.md) | Add the example files, settings, workflows, `SIGNOFF.toml`, protect `main`, first pull request |
-| 4 | [IMGAgent](04-imgagent.md) | Ask your repository questions, sign off files in your own words |
+| 4 | [IMGAgent](04-imgagent.md) | Ask your repository questions, sign off files in your own words, record an independent AI review |
 | 5 | [The report on GitHub Pages](05-pages.md) | Publish the interactive aisignoff report of your repository |
 | 6 | [Releases and DOIs](06-zenodo.md) | Connect Zenodo, add a citation, publish a release |
 | 7 | [Advanced: working with AI agents](07-advanced.md) | Demonstration: an agent opens a pull request, you inspect and merge it; and an advanced setup with sandboxes and the cluster |
@@ -29,6 +29,7 @@ Pascal does every step at the same time on this repository, on the projector.
 | [`templates/`](templates/) | Files to copy into your repository: the release workflow, a `CITATION.cff` |
 | `cheat-sheet.*`, `maintainer-cheat-sheet.*` | The two cheat sheets |
 | [`facilitator-guide.md`](facilitator-guide.md) | For whoever runs the session |
+| [`tools/walkthrough.py`](tools/walkthrough.py) | Replays the exercises of parts 3 to 7 in a local git repository with aisignoff, as PR-signoff and File-signoff would check them |
 
 ## Ground rules
 

@@ -61,7 +61,7 @@ Workflows are the little robots. The group has ready-made ones. Install three of
 | Workflow | What it does |
 |---|---|
 | PR-signoff | Checks the ticked declaration of every pull request; sets the `ai:G*`, `human:H*`, `ai-review:A*` labels |
-| File-signoff | Checks that every file (every line) is declared; writes the report (and, switched on in part 5, publishes it on GitHub Pages); without `SIGNOFF.toml` it opens a pull request to set it up |
+| File-signoff | Checks that every file (every line) is declared; writes the report and the file badges (and, switched on in part 5, publishes the report on GitHub Pages); without `SIGNOFF.toml` it opens a pull request to set it up |
 | Signoff-Badges | Makes badges from the declarations of merged pull requests |
 
 ✅ **Check:** **Actions** lists runs for File-signoff and Signoff-Badges. File-signoff has a yellow warning
@@ -89,7 +89,8 @@ Workflows are the little robots. The group has ready-made ones. Install three of
    ```
 
    Leave the rest as it is. Look at `[history]` (every line is declared by the pull request that brought it)
-   and `[review]` on the way.
+   and the comment on review findings on the way. The commented `exclude` line mentions `reviews/**`: you don't
+   need it, the review folder `reviews/` is left out by itself (part 4).
 4. **Commit changes… → Commit directly to the `aisignoff-setup` branch → Commit changes.**
 5. Back on the pull request's **Conversation** tab, wait for the checks (about a minute).
    **PR-signoff** is red: in the description **G0** and **A0** are already ticked (a tool wrote the file), and
@@ -135,23 +136,26 @@ From now on, changes reach `main` only through checked pull requests.
 
 Add the badges to your README, as a real pull request.
 
-1. Open `README.md` → pencil. At the very top, paste this and replace `workshop-jane-doe` (four times) with
-   the name of your repository:
+1. Open `README.md` → pencil. At the very top, paste this and replace `workshop-jane-doe` (twice in each line)
+   with the name of your repository:
 
    ```markdown
    [![AI generation](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/industrial-mathematics-group/workshop-jane-doe/badges/aisignoff-generation.json)](https://github.com/industrial-mathematics-group/workshop-jane-doe/actions/workflows/file-signoff.yml)
    [![Human review](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/industrial-mathematics-group/workshop-jane-doe/badges/aisignoff-human-review.json)](https://github.com/industrial-mathematics-group/workshop-jane-doe/actions/workflows/file-signoff.yml)
    [![AI review](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/industrial-mathematics-group/workshop-jane-doe/badges/aisignoff-ai-review.json)](https://github.com/industrial-mathematics-group/workshop-jane-doe/actions/workflows/file-signoff.yml)
+   [![AI review findings](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/industrial-mathematics-group/workshop-jane-doe/badges/aisignoff-findings.json)](https://github.com/industrial-mathematics-group/workshop-jane-doe/actions/workflows/file-signoff.yml)
    ```
 
 2. **Commit changes… → Create a new branch for this commit and start a pull request → Propose changes →
    Create pull request.** The description is the group's template, ending in the **AI declaration**.
 3. Watch the checks go **red**. Then **break it on purpose** once: tick **G0** and **G1** together and read
    **Details** on the PR-signoff check.
-4. Tick it properly: **G0** (you pasted it), no model, **H2**, **A0**. Leave `AI-Review-Findings:` empty.
+4. Tick it properly: **G0** (you pasted it), no model, **H2**, **A0**. Leave `AI-Review-Findings:` empty (it is
+   only for A1 to A3).
 5. Checks green, labels `ai:G0`, `human:H2`, `ai-review:A0` on the right: **Merge pull request → Confirm merge.**
 
-✅ **Check:** the front page shows three badges (they may need a minute and a reload), and the newest commit
+✅ **Check:** the front page shows four badges (they may need a minute and a reload; the findings badge says
+F- for now, since nothing has had an independent AI review yet), and the newest commit
 on `main` carries your ticked declaration in its message.
 
 **Your repository is now set up like the group's.** The [maintainer cheat sheet](maintainer-cheat-sheet.md) has

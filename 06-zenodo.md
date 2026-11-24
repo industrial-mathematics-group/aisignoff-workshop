@@ -38,9 +38,10 @@ in the sidebar, and Zenodo takes the title and authors from it.
 
 Optional, the same way: [`templates/signoff-release.yml`](templates/signoff-release.yml) as
 `.github/workflows/signoff-release.yml` attaches the aisignoff report to every release. Declare it as a copied
-file keeps its origin: it comes from the aisignoff examples, made by Claude Opus and checked by a new session,
-so **G3**, **Claude Opus**, **A1**, and your human review (**H0** if you only skimmed it, **H1** if you read the
-important parts).
+file keeps its origin: it comes from the aisignoff examples, made by Claude Opus and checked by GPT Sol in a new
+session, which found nothing (aisignoff's own report says so). So: **G3**, **Claude Opus**, **A1** with
+`GPT Sol (OpenAI)` after *Model, if not one of the above:*, `AI-Review-Findings: none`, and your human review
+(**H0** if you only skimmed it, **H1** if you read the important parts).
 
 ✅ **Check:** the sidebar of your repository's front page shows **Cite this repository**.
 
@@ -69,10 +70,11 @@ pull request. [aisignoff's README](https://github.com/industrial-mathematics-gro
 ## Where AI signoff comes in
 
 - `SIGNOFF.toml` is a file of the repository, so it is **archived with every release**.
-- The declarations of single pull requests live in the git history, which Zenodo doesn't archive. Before a
-  real release, a maintainer can take a **snapshot** (`aisignoff freeze`) that writes them into
-  `SIGNOFF.snapshot.json`, which is archived too.
-- With `signoff-release.yml`, the release on GitHub also carries the report as files.
+- So is the review folder `reviews/`, with every AI review's report and record file.
+- The declarations of single pull requests live in the git history, which Zenodo doesn't archive. aisignoff
+  works out every line from that history each time (a cache keeps it fast); there is no snapshot file to take
+  before a release any more. With `signoff-release.yml`, the release on GitHub carries the finished report, every
+  line with its levels and findings, as files.
 
 ## For real
 

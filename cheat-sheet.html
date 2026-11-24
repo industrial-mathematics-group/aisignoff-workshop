@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><title>Cheat sheet: GitHub and AI signoff</title>
 <style>
-@page { size: A4; margin: 9mm 10mm; }
+@page { size: A4; margin: 8mm 10mm 7mm; }
 * { box-sizing: border-box; }
-body { font-family: "DejaVu Sans", "Helvetica Neue", Arial, sans-serif; font-size: 8.1pt; line-height: 1.32; color: #1b1f24; margin: 0; }
+body { font-family: "DejaVu Sans", "Helvetica Neue", Arial, sans-serif; font-size: 7.5pt; line-height: 1.24; color: #1b1f24; margin: 0; }
 h1 { font-size: 16pt; white-space: nowrap; margin: 0; letter-spacing: -0.2pt; }
 .sub { color: #57606a; font-size: 8pt; margin: 1mm 0 2.5mm; }
 header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1.6pt solid #1f6feb; padding-bottom: 1.5mm; margin-bottom: 2.5mm; }
 header .url { font-size: 7.4pt; flex: 0 0 62mm; color: #57606a; text-align: right; }
 h2 { font-size: 9pt; margin: 0 0 1.2mm; color: #0b4fb3; text-transform: uppercase; letter-spacing: 0.4pt; }
-.box { border: 0.7pt solid #d0d7de; border-radius: 2mm; padding: 2mm 2.5mm; margin-bottom: 2.4mm; break-inside: avoid; }
+.box { border: 0.7pt solid #d0d7de; border-radius: 2mm; padding: 1.6mm 2.3mm; margin-bottom: 2mm; break-inside: avoid; }
 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3mm; }
 table { border-collapse: collapse; width: 100%; }
 td, th { vertical-align: top; padding: 0.6mm 1mm; text-align: left; }
@@ -31,7 +31,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
 </style></head><body>
 <header>
   <div><h1>Cheat sheet: GitHub and AI signoff</h1>
-  <div class="sub">Everything in the web browser. Workshop of 19 November 2026.</div></div>
+  <div class="sub">Everything in the web browser. Workshop of 27 November 2026 · aisignoff 0.20.1.</div></div>
   <div class="url">Workshop<br><b>github.com/industrial-mathematics-group/aisignoff-workshop</b></div>
 </header>
 
@@ -59,7 +59,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
       <li>Checks green → <b>Merge pull request</b> → <b>Confirm merge</b> → <b>Delete branch</b>.</li>
     </ol>
     <h2 style="margin-top:2mm">Red check?</h2>
-    Click <b>Details</b> on the check. Usually: no or two G boxes · G1–G3 without a model · only H0 where H1 is required · A2/A3 without report or findings line · page not reloaded.
+    Click <b>Details</b> on the check. Usually: no or two G boxes · G1–G3 without a model · only H0 where H1 is required · A1–A3 without findings line · A2/A3 without report · a file in <code>reviews/</code> changed, or a record file next to other changes · page not reloaded.
   </div>
 </div>
 
@@ -78,21 +78,30 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
       <li><b>You are responsible</b> for what you merge, whoever or whatever wrote it.</li>
     </ul>
     <ul>
-      <li><b>A2/A3 only:</b> name model + report, and fill <code>AI-Review-Findings:</code> with the worst finding (<code>none</code> · <code>trivial</code> · <code>minor</code> · <code>major</code> · <code>critical</code>). Major/critical: fix and review again first.</li>
+      <li><b>A1–A3:</b> fill <code>AI-Review-Findings:</code> with the worst finding (<code>none</code> · <code>trivial</code> · <code>minor</code> · <code>major</code> · <code>critical</code>); A2/A3 also name model + report. Recorded, never blocking; major/critical: better fix and review again first.</li>
+      <li><b>Findings (F):</b> F0 nothing open · F1 minor · F2 major · F3 critical · <b>F-</b> no independent AI review since the line last changed.</li>
       <li><b>Minimums:</b> a repository can require more (<code>[policy]</code> in its <code>SIGNOFF.toml</code>, e.g. at least H1).</li>
     </ul>
   </div>
 </div>
 
 <div class="grid">
+<div>
   <div class="box">
     <h2>IMGAgent: ask and sign off</h2>
     In a new issue or a comment (not in a code box); folders separated by commas:
     <blockquote>@IMGAgent ask notes, analysis<br>When does the coffee reach 60 °C?</blockquote>
     <blockquote>@IMGAgent signoff<br>I checked results/summary.md line by line against the data. Please record H2, reviewer Jane Doe.</blockquote>
-    <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time.
+    <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time. An AI review needs its findings (<i>A1, findings: none</i>).
     Without AI: <i>New issue → Signoff: declare or attest files</i>. <code>@IMGAgent help</code>
   </div>
+  <div class="box">
+    <h2>Golden rules</h2>
+  One change per pull request · never put unpublished data, personal data or passwords into a public repository or an AI tool ·
+  when unsure, declare <b>more</b> AI generation and <b>less</b> review rather than the other way round, and say why in the description.
+  </div>
+</div>
+<div>
   <div class="box">
     <h2>Releases and DOIs (Zenodo)</h2>
     <ol>
@@ -102,12 +111,13 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
       <li>Practise on <b>sandbox.zenodo.org</b>: real DOIs can't be deleted.</li>
     </ol>
   </div>
+  <div class="box">
+    <h2>An AI review after the merge</h2>
+    A different model's review (A2) of files in <code>main</code>: a pull request that <b>only adds</b> the report and a record file to <code>reviews/</code>; leave the declaration unticked.
+    <blockquote style="font-size:6.8pt">[[attestations]]<br>commit = "&lt;full hash that brought the lines&gt;"<br>path = "analysis/fit_cooling.py"<br>AI-Review = "A2"<br>AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"<br>AI-Review-Findings = "minor"</blockquote>
+    <code>reviews/</code> is add-only: a later review is a new file. The reviewer changes nothing.
+  </div>
 </div>
-
-<div class="box">
-  <h2>Golden rules</h2>
-  One change per pull request · never put unpublished data, personal data or passwords into a public repository or an AI tool ·
-  when unsure, declare <b>more</b> AI generation and <b>less</b> review rather than the other way round, and say why in the description.
 </div>
 
 <footer>

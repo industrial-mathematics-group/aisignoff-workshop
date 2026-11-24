@@ -13,7 +13,8 @@ In the workshop:
 
 - The repository's default (the `**` annotation in `SIGNOFF.toml`) is what is true for most files: **G0 · H2 · A0**, with you as reviewer.
 - The other three folders are declared with `@IMGAgent signoff`, in your own words.
-- Later, have a fresh AI session check `analysis/` and record it as **A1**.
+- Later, have a fresh AI session check `analysis/` and record it as **A1**, with what it found (its findings).
+- Optionally, have a different model review `analysis/fit_cooling.py` and record it as **A2**, in the review folder `reviews/`.
 
 > **The story is made up**, so that there is something different to declare in each folder. In reality the whole
 > example, notes and data included, was written by Claude for this workshop. That's fine in a throwaway workshop
