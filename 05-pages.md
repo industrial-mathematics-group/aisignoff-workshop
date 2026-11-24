@@ -4,7 +4,7 @@
 
 aisignoff can draw an **interactive report** of a repository, like a coverage report for AI use: a sunburst
 of the folders, a table per folder, and every file line by line, coloured by its levels. GitHub Pages
-publishes it as a website at `https://industrial-mathematics-group.github.io/<your repository>/aisignoff/`.
+publishes it as a website at `https://www.industrial-mathematics.org/<your repository>/signoff/`.
 File-signoff writes the report on every run already; one switch makes it publish it too.
 
 ## Step 1 · Turn Pages on (1 min)
@@ -51,15 +51,19 @@ Open `https://www.industrial-mathematics.org/workshop-jane-doe/signoff/` (with y
 address without `signoff/` leads there too). To have the link on your front page: the **⚙** next to *About* →
 tick **Use your GitHub Pages website** → **Save**.
 
+- **The header:** the mix of each axis, and two flags: the share of lines **without independent AI review**
+  (F-) and the share with an **open major or critical finding** (F2, F3).
 - **Sunburst:** click a folder to zoom in, the centre to go back.
-- **Axis buttons:** colour by **Generation**, **Human review**, **AI review**, or the **Review gap**
-  (generation minus human review: where AI did a lot and people checked little).
+- **Axis buttons:** colour by **Generation**, **Human review**, **AI review** or **Findings** (F0 to F3, and
+  F- in grey for lines no independent AI review has seen since they last changed). **Folder colour** chooses
+  how a folder sums up its files: the average, the majority, or the weakest link.
 - **A file:** its levels, who reviewed it, where the declaration comes from, and every line with its level
-  in the margin. Hover the margin.
+  in the margin, with syntax colours as on GitHub. Hover the margin.
 - **Find:** type part of a path to jump to it. The address keeps the view, so you can send a link to one file.
 
-Things to try: find the folder with the biggest review gap. Make it smaller (part 4's attestation, or a review by
-a colleague) and watch the report change after the next merge.
+Things to try: switch to **Generation**, then **Human review**: where did AI do a lot and people check little?
+Then **Findings**: which of those has never had an independent review (F-)? Part 4's reviews change that:
+after their merge, `analysis/` turns from grey to a findings colour.
 
 > The report is public, with the text of every file, like the repository itself. A repository has one Pages
 > site, and each deployment replaces all of it: a repository with a documentation site leaves `pages` off and

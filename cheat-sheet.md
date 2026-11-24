@@ -33,8 +33,11 @@ Printable version: [cheat-sheet.pdf](cheat-sheet.pdf) · Workshop: [overview](RE
 
 - **G:** tick exactly one, the highest of any substantial part; for G1–G3 also tick the model(s).
 - **H, A:** tick the highest level you actually did (H2 includes H0 and H1). Nothing ticked under A = A0.
-- **A2/A3 only:** name the model and the report, and fill `AI-Review-Findings:` with the worst finding
-  (`none` · `trivial` · `minor` · `major` · `critical`). Major or critical: fix it and review again first.
+- **A1–A3:** fill `AI-Review-Findings:` with the worst finding (`none` · `trivial` · `minor` · `major` ·
+  `critical`); **A2/A3** also name the model and the report. A finding doesn't block the merge, it is recorded;
+  major or critical: better fix it and have it reviewed again first.
+- **Findings in the report:** F0 nothing open · F1 minor · F2 major · F3 critical · F- no independent AI review
+  since the line last changed.
 - **Minimums:** a repository can require more (`[policy]` in its `SIGNOFF.toml`, e.g. at least H1).
 - **You are responsible** for what you merge, whoever or whatever wrote it.
 
@@ -54,12 +57,31 @@ I checked results/summary.md line by line against the data. Please record H2, re
 
 `ask` answers from those folders only. `signoff` confirms what it understood or asks, then opens a pull request
 that changes `SIGNOFF.toml`: check *Files changed*, tick your human review, merge. One request at a time.
+An AI review it records needs its findings (`A1, findings: none`).
 Without AI: *Issues → New issue → Signoff: declare or attest files*. More: `@IMGAgent help`.
+
+## An AI review after the merge
+
+A different model's review (A2) of files already in `main`: one pull request that **only adds** to `reviews/`
+the report and a record file, with the AI declaration left unticked:
+
+```toml
+# reviews/fit-cooling-review.toml
+[[attestations]]
+commit = "<full hash of the commit that brought the lines>"
+path = "analysis/fit_cooling.py"
+AI-Review = "A2"
+AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"
+AI-Review-Findings = "minor"
+```
+
+`reviews/` is add-only: a later review goes into a new file. The reviewer changes nothing; fixing is the author's.
 
 ## Red check?
 
 Open **Details** on the check. Usual reasons: no or two G boxes · G1–G3 without a model · only H0 where H1 is required ·
-A2/A3 without report or findings line · page not reloaded.
+A1–A3 without findings line · A2/A3 without report · a file in `reviews/` changed, or a record file next to other
+changes · page not reloaded.
 
 ## Releases and DOIs (Zenodo)
 

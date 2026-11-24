@@ -80,18 +80,68 @@ G2, `results` at G3, `paper` at G1.
 Prefer a form? **Issues → New issue → Signoff: declare or attest files** asks the same questions as drop-downs,
 without AI. The result is the same kind of pull request.
 
-## Optional · Record an independent AI review (5 min)
+## Optional · Record a fresh-session check, A1 (5 min)
 
 Open a **new** chat in an AI tool you use (no earlier conversation), paste `analysis/fit_cooling.py` and ask it
-to look for mistakes. If it finds nothing that needs fixing, record it, in a new issue:
+to look for mistakes, and to say how bad the worst one is (`none`, `trivial`, `minor`, `major`, `critical`).
+Record what it found, in a new issue:
 
 ```text
 @IMGAgent signoff
 A fresh Claude session, without the original conversation, reviewed analysis/fit_cooling.py
-as it is now and found nothing to fix. Please record it as an AI review, A1.
+as it is now and found nothing to fix. Please record it as an AI review, A1, findings: none.
 ```
 
-That's an **attestation**: it raises the review of the files as they are now, and keeps how they were made.
+That's an **attestation**: it raises the review of the file as it is now, and keeps how it was made. Every AI
+review says what it found, A1 too: without the findings IMGAgent asks for them. You recorded this one yourself,
+so it goes into `SIGNOFF.toml` like your other signoffs.
+
+## Optional · An independent AI review as its own pull request, A2 (15 min)
+
+A review by a **different** model, with a written report, is A2. It doesn't touch `SIGNOFF.toml`: it goes into
+the **review folder** `reviews/`, in a pull request that adds only the report and a small record file.
+
+1. **The review.** In a new chat with a different model than the one that wrote the file (the story says
+   Claude wrote `analysis/`, so use ChatGPT, GPT Sol), paste `analysis/fit_cooling.py` and ask:
+
+   ```text
+   Review this script. Change nothing. Write a short report in Markdown: one line per finding, each with
+   its severity (trivial, minor, major or critical), and at the top the most severe one ("none" if you
+   found nothing).
+   ```
+
+2. **The commit it reviewed.** Open `analysis/fit_cooling.py` in your repository → **History** → the commit
+   *Add the coffee cooling project* → the copy icon next to its short hash (it copies the full hash).
+3. **The report.** **Add file → Create new file**, name `reviews/fit-cooling-review.md`, paste the report.
+   **Commit changes… → Create a new branch … and start a pull request → Propose changes**, but **don't create the
+   pull request yet**.
+4. **The record file.** Switch to the new branch (the branch menu at the top left of the file list) → **Add
+   file → Create new file**, name `reviews/fit-cooling-review.toml`, and fill in the hash and the worst finding:
+
+   ```toml
+   [[attestations]]
+   commit = "paste the full hash here"
+   path = "analysis/fit_cooling.py"
+   AI-Review = "A2"
+   AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"
+   AI-Review-Findings = "minor"
+   ```
+
+   **Commit directly to the branch.** Then **Pull requests → Compare & pull request → Create pull request**.
+5. **Leave the AI declaration unticked.** The pull request only adds files to `reviews/`: it is a review, not
+   content, and needs no declaration. PR-signoff says so in **Details**. Merge it.
+
+✅ **Check:** in the report (part 5), `analysis/` is at **A2**, and on the **Findings** axis at **F1** if the
+worst finding was `minor` (F0 for `none` or `trivial`).
+
+Good to know:
+
+- **Add-only.** A pull request that changes or deletes a file in `reviews/` fails. A second review, such as
+  the one after a fix, goes into a new file.
+- **A record file comes alone.** A pull request that adds one and changes anything outside `reviews/` fails:
+  a change's own review is declared in its description (A2 with the report and the findings line).
+- **The author never clears a finding.** Fixing is the author's work, in a pull request of its own; the fixed
+  lines go back to F- until the next independent review attests both commits, the reviewed one and the fix.
 
 ## Optional · Let it change something
 

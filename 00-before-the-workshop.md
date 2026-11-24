@@ -2,7 +2,7 @@
 
 # 0 · Before the workshop
 
-Please do this before Thursday. It takes five minutes. If something doesn't work, tell Pascal by Wednesday.
+Please do this before Friday, 27 November. It takes five minutes. If something doesn't work, tell Pascal by Thursday.
 
 ## 1. A GitHub account in the organisation
 
@@ -32,7 +32,7 @@ Good to know about your own repository:
 4. Leave everything else as it is: no README, no `.gitignore`, no licence, no template.
 5. **Create repository.**
 
-You'll see an empty page with "Quick setup". That's right: we fill it together on Thursday.
+You'll see an empty page with "Quick setup". That's right: we fill it together on Friday.
 
 > It has to be in the organisation, not under your own account: the group's checks and the IMGAgent
 > assistant only work for the organisation's repositories.

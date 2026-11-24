@@ -32,6 +32,17 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
       and **Zenodo Sandbox** (they are separate apps), or participants can't see their organisation repositories
       on Zenodo (part 6). The first participant who requests access triggers an approval request you can grant.
 
+### aisignoff version (admin, by Thursday)
+
+- [ ] The workshop follows **aisignoff 0.20.1**. The organisation's reusable workflows pin **0.18.0** (24 November
+      2026): raise `default: "0.18.0"` to `"0.20.1"` under `aisignoff-version` in **both**
+      `.github/workflows/file-signoff.yml` and `.github/workflows/pr-signoff.yml` of
+      `industrial-mathematics-group/.github` (commit to `main`). Every exercise also passes on 0.18.0; what differs
+      is only that 0.18.0 doesn't yet refuse a record file next to other changes, and the bug fixes of
+      0.19.1–0.20.1 and the syntax colours of the report's line view are missing.
+- [ ] Check that IMGAgent records an AI review with its findings (part 4, optional A1): it should ask for them
+      when they are missing, as the issue form does.
+
 ### The day before: IMGAgent and the repositories
 
 - [ ] *Organisation settings → GitHub Apps → IMGAgent → Configure → Repository access:* add every
@@ -39,7 +50,9 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
       **All repositories**).
 - [ ] Check the list of `workshop-*` repositories against the participants; chase the missing ones.
 - [ ] Dry run: create `workshop-test`, go through parts 3 to 6 end to end with the pages open, then delete it.
-      It shows how long each step takes with the current GitHub UI.
+      It shows how long each step takes with the current GitHub UI. Without GitHub, `tools/walkthrough.py`
+      replays every pull request of parts 3 to 7 against the aisignoff release you have installed (usage at its
+      top); with 0.20.1 all 33 checks come out as the pages say.
 - [ ] Print the [cheat sheet](cheat-sheet.pdf) for everyone, and the [maintainer cheat sheet](maintainer-cheat-sheet.pdf)
       for those who will maintain repositories.
 
@@ -53,7 +66,8 @@ step by step with the participants. Differences from their repositories:
 - **Step D:** be honest about this repository: everything in it, the guide and the example, was written by
   Claude (Claude Opus 5.5) and checked by you. A fitting `**` default is **G3 · H1 (or what you did) · A0**,
   with `Assisted-by = ["Claude Opus 5.5 (Anthropic)"]` added to the annotation. A good moment to mention
-  `exclude` too (files that need no declaration, such as committed AI review reports). The participants'
+  `exclude` too (files that need no declaration, such as `docs/build/**`; the review folder `reviews/` needs no
+  entry, it is left out by itself). The participants'
   example story (G0/G1/G2/G3 by folder) is made up; their repositories role-play it.
 - **Part 4:** for the signoff demo, use something true, e.g. *"The cheat sheet PDFs were made by Claude Opus 5.5
   on its own; I checked them against the Markdown (H1)"*, or an attestation of a page you read line by line.
@@ -86,13 +100,14 @@ declare what really happened (no role-play story). Watch for: step D's `**` defa
 | 0:40 | [3 Set up](03-setup.md) D | The longest step. Explain `[history]` and `[review]` while the checks run |
 | 0:55 | [3 Set up](03-setup.md) E–F | The red→green moment in F is the payoff: give it time |
 | 1:10 | Break | |
-| 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time |
-| 1:40 | [5 Pages](05-pages.md) | Two commented lines in each place: check indentation on screens. While the pages job runs: explain the review gap |
+| 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time. The A2 review pull request is optional: do it on the projector if time is short |
+| 1:40 | [5 Pages](05-pages.md) | Two commented lines in each place: check indentation on screens. While the pages job runs: explain the findings axis and F- |
 | 1:55 | [6 Zenodo](06-zenodo.md) | Sandbox only. Archiving takes a few minutes: start the release, then talk |
 | 2:15 | [7.1 Basic agent workflow](07-advanced.md#71--a-basic-agent-workflow-claude-on-the-web) | Live: task → pull request → inspect → merge. About 15 min |
 | 2:30 | [7.2 Showcase](07-advanced.md#72--showcase-an-advanced-setup) | Demonstration only, no setup. About 15 min |
 
-Short on time: skip step F's "break it on purpose", the optional parts of 4, and step 4 of part 6.
+Short on time: skip step F's "break it on purpose", the optional parts of 4 (show the A2 review pull request on
+the projector instead), and step 4 of part 6.
 
 ## What to say at each step (talking points)
 
@@ -105,9 +120,14 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
   bypass list empty and say why: on the playground, Claude with your admin login pushed straight to `main`
   because *Repository admin* was an "always" bypass, and a bypass also lifts force-push protection. "For pull
   requests only" is the safe way out. Come back to it in 7.2 (an agent as its own GitHub App can't bypass).
+- **2:** the reviewer only reviews; its findings are recorded and shown (F0–F3, F-), never a gate. A1 says what
+  it found too, so that there is a reference for what a different model finds at A2.
 - **4:** IMGAgent writes declarations, it doesn't decide them: the person checks the diff and ticks. Each
-  request costs the group a few cents.
-- **5:** the report is public with the text of each file. One Pages site per repository, and `pages: true` replaces it: not for repositories with a docs site.
+  request costs the group a few cents. Who writes what: `SIGNOFF.toml` is what a person signs off (IMGAgent's
+  pull requests, which you merge); AI reviews go into `reviews/`, add-only, in pull requests of their own that
+  need no declaration.
+- **5:** the report is public with the text of each file. The header's two flags (share without independent AI
+  review, share with an open major or critical finding) are the quickest summary of a repository. One Pages site per repository, and `pages: true` replaces it: not for repositories with a docs site.
 - **6:** version DOI for a paper, concept DOI for the badge. Real DOIs are forever.
 - **7.1:** go through *Files changed* slowly, comment on one line, let the agent answer with a new commit.
   Then tick an honest human review: "the AI wrote it" isn't one.
@@ -123,11 +143,13 @@ Short on time: skip step F's "break it on purpose", the optional parts of 4, and
 | The setup pull request has no checks | Nothing was pushed to `aisignoff-setup` yet: the edit of step D starts them |
 | File-signoff red on the setup pull request | A `TODO` left, a typo in a level (`"G 0"`), or `Reviewed-by` not in `[" "]` |
 | A required check can't be found in the ruleset | It hasn't run in this repository yet, or the name differs: it's `pr-signoff / check`, `file-signoff / lint` |
-| PR-signoff stays red after ticking | Two G boxes, G1–G3 without a model, no H ticked, or the page wasn't reloaded. **Details** says which |
+| PR-signoff stays red after ticking | Two G boxes, G1–G3 without a model, no H ticked, A1–A3 without `AI-Review-Findings:`, or the page wasn't reloaded. **Details** says which |
+| The A2 review pull request is red | The record file's `commit` isn't a commit of `main` (copy the full hash from the file's **History**), the report path in `AI-Reviewed-by` differs from the report's name, the report is missing from the pull request, or the pull request also changes something outside `reviews/` |
+| A correction to a review is red | `reviews/` is add-only: a changed or deleted file there fails. Close it and record the corrected review in a new file |
 | IMGAgent doesn't answer | Not installed on that repository (check *Settings → GitHub Apps*), the command is inside a code box or quote, or no folder was named. `@IMGAgent help` tests it |
 | IMGAgent's signoff refuses | No `SIGNOFF.toml` on `main` yet (step D not merged), or a path that doesn't exist on `main` |
 | Second signoff pull request shows "This branch has conflicts" | Two requests open at once. Merge one, then ask again with `@IMGAgent signoff` in the second issue, or **Resolve conflicts**: keep both entries, delete the `<<<<<<<`, `=======`, `>>>>>>>` lines |
-| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the pages job of File-signoff hasn't finished; the report is under `/aisignoff/` |
+| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the pages job of File-signoff hasn't finished; the report is under `/signoff/` (the default `pages-path`) |
 | No pages job in File-signoff | `pages: true` still commented out, or `with:` not lined up with `uses:` (the run then fails with an invalid workflow) |
 | pages job red: "Couldn't deploy" | Pages source not *GitHub Actions*, or `pages: write` / `id-token: write` still commented out |
 | Zenodo doesn't list the repository | Organisation access for Zenodo (Sandbox) not granted; **Sync now** after granting |

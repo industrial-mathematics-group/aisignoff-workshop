@@ -49,6 +49,18 @@ What you'll see:
 **It acts with your GitHub rights.** Connected this way, Claude usually pushes with your account. If you are on
 the bypass list of your rules, so is Claude: that's why part 3 E leaves the bypass list empty.
 
+**What the agent knows about the rules:** `aisignoff guide --role dev` is a one-page brief for an agent that
+writes a change: what to declare, that it never declares a review or findings for itself, and that it never
+writes `SIGNOFF.toml` or the review folder. `aisignoff init` points agents to it from `AGENTS.md` (or
+`aisignoff guide --agents-md` adds it later); the group's repositories have it.
+
+**A second agent as the reviewer:** `aisignoff guide --role review` is the brief for an agent that reviews:
+it only reviews and changes nothing, and rates each finding (`trivial` to `critical`). For an open pull request
+it gives the lines to copy into the description (A2: tick the box, name the model and its report, fill in
+`AI-Review-Findings:`). For a change that has landed, it records the review as a report and a record file in
+`reviews/`, in a pull request of its own: exactly what you did by hand in part 4. Use a different model than
+the one that wrote the change, and a new session.
+
 **Claude on your computer:** the Claude desktop app works the same way, but runs on your own computer, with
 your files and your tools. The result is still a branch and a pull request.
 
