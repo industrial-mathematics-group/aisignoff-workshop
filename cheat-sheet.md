@@ -57,7 +57,6 @@ I checked results/summary.md line by line against the data. Please record H2, re
 
 `ask` answers from those folders only. `signoff` confirms what it understood or asks, then opens a pull request
 that changes `SIGNOFF.toml`: check *Files changed*, tick your human review, merge. One request at a time.
-An AI review it records needs its findings (`A1, findings: none`).
 Without AI: *Issues → New issue → Signoff: declare or attest files*. More: `@IMGAgent help`.
 
 **Setting up a file:** `@IMGAgent setup aisignoff` (`SIGNOFF.toml`), `setup reuse` (`REUSE.toml` and `LICENSES/`),
@@ -66,20 +65,15 @@ defaults. Change what you need (tick boxes; values via *⋯ → Edit*), tick **D
 
 ## An AI review after the merge
 
-A different model's review (A2) of files already in `main`: one pull request that **only adds** to `reviews/`
-the report and a record file, with the AI declaration left unticked:
-
-```toml
-# reviews/fit-cooling-review.toml
-[[attestations]]
-commit = "<full hash of the commit that brought the lines>"
-path = "analysis/fit_cooling.py"
-AI-Review = "A2"
-AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"
-AI-Review-Findings = "minor"
+```text
+@IMGAgent review analysis with notes
+Does the fit match what the lab notes assume?
 ```
 
-`reviews/` is add-only: a later review goes into a new file. The reviewer changes nothing; fixing is the author's.
+A quick review (**A1**) of the first folders, reading the `with` folders. IMGAgent answers with the findings and
+opens a pull request that only adds a record file to `reviews/`: leave its declaration unticked, check that the
+findings are fair, merge. Each file then shows its own highest finding (F0–F3). `reviews/` is add-only: a later
+review adds a new file. The reviewer changes nothing; fixing is the author's.
 
 ## Red check?
 

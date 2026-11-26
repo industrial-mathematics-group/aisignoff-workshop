@@ -92,7 +92,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
     In a new issue or a comment (not in a code box); folders separated by commas:
     <blockquote>@IMGAgent ask notes, analysis<br>When does the coffee reach 60 °C?</blockquote>
     <blockquote>@IMGAgent signoff<br>I checked results/summary.md line by line against the data. Please record H2, reviewer Jane Doe.</blockquote>
-    <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time. An AI review needs its findings (<i>A1, findings: none</i>).
+    <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time.
     Without AI: <i>New issue → Signoff: declare or attest files</i>. <code>@IMGAgent help</code>
     <br><b>Set up a file:</b> <code>@IMGAgent setup aisignoff</code> · <code>reuse</code> · <code>docs</code> · <code>citation</code> → a form with defaults → change what you need → tick <b>Done</b> → a pull request (G0).
   </div>
@@ -114,9 +114,9 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
   </div>
   <div class="box">
     <h2>An AI review after the merge</h2>
-    A different model's review (A2) of files in <code>main</code>: a pull request that <b>only adds</b> the report and a record file to <code>reviews/</code>; leave the declaration unticked.
-    <blockquote style="font-size:6.8pt">[[attestations]]<br>commit = "&lt;full hash that brought the lines&gt;"<br>path = "analysis/fit_cooling.py"<br>AI-Review = "A2"<br>AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"<br>AI-Review-Findings = "minor"</blockquote>
-    <code>reviews/</code> is add-only: a later review is a new file. The reviewer changes nothing.
+    <blockquote>@IMGAgent review analysis with notes<br>Does the fit match what the lab notes assume?</blockquote>
+    A quick review (<b>A1</b>) of the first folders, reading the <code>with</code> folders → the findings, and a pull request that only adds a record file to <code>reviews/</code> → leave its declaration unticked, check the findings are fair, merge. Each file shows its own highest finding (F0–F3).
+    <code>reviews/</code> is add-only: a later review is a new file. The reviewer changes nothing; fixing is the author's.
   </div>
 </div>
 </div>

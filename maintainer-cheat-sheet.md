@@ -187,10 +187,19 @@ included. Repositories with their own
 `.github/ISSUE_TEMPLATE/` must copy `signoff-request.yml` into it; optionally create the label
 `signoff-request`.
 
+**Reviews:** `@IMGAgent review <folders> with <context folders>` and optional text on what to look at has
+Claude Sonnet (low effort, new session) review the files of the default branch. It answers with the findings
+and the three lines to copy into a PR description, and opens a PR that only adds one record file to the review
+folder: an **A1** attestation of each reviewed file with its own highest finding (`aisignoff attest -a A1
+--findings …`), so one major finding in one file doesn't mark the others. The PR needs no declaration; check
+that the findings are fair and merge. Needs `SIGNOFF.toml` with `[history]`; only files that need a
+declaration are attested. A2/A3 (a different, capable model with a committed report) stay a review PR by
+hand or by a reviewing agent (§9, `aisignoff guide --role review`).
+
 Commands are action, then folders, then text (the old order `docs ask` gets a reminder): `@IMGAgent ask notes,
 analysis` and a question (answers from those folders), `@IMGAgent update docs with src` and a task (a PR),
 `@IMGAgent make docs` (a PR with a Zensical site), `@IMGAgent setup …` (a form, then a PR, no AI),
-`@IMGAgent signoff` and your words, `@IMGAgent help`. Only
+`@IMGAgent signoff` and your words, `@IMGAgent review docs with src` (a quick A1 review, below), `@IMGAgent help`. Only
 people with write access are answered; commands in code blocks or quotes are ignored.
 
 ## 8. Releases and Zenodo

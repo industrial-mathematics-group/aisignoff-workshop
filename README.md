@@ -12,7 +12,7 @@ Pascal does every step at the same time on this repository, on the projector.
 | 1 | [GitHub in five words](01-git-and-github.md) | Repository, commit, branch, pull request, merge, as pictures |
 | 2 | [AI signoff in plain words](02-ai-signoff.md) | Why we declare AI use, the G · H · A levels and the review findings, who is responsible |
 | 3 | [Set up your repository](03-setup.md) | Add the example files, settings, workflows, `SIGNOFF.toml` with IMGAgent, protect `main`, first pull request |
-| 4 | [IMGAgent](04-imgagent.md) | Ask your repository questions, sign off files in your own words, record an independent AI review |
+| 4 | [IMGAgent](04-imgagent.md) | Ask your repository questions, sign off files in your own words, let it review a folder |
 | 5 | [A website with the report](05-pages.md) | A documentation site on GitHub Pages, with the interactive aisignoff report of your repository |
 | 6 | [Releases and DOIs](06-zenodo.md) | Connect Zenodo, add a citation with IMGAgent, publish a release |
 | 7 | [Advanced: working with AI agents](07-advanced.md) | Demonstration: an agent opens a pull request, you inspect and merge it; and an advanced setup with sandboxes and the cluster |

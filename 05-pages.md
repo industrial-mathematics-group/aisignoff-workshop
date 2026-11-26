@@ -56,8 +56,8 @@ Open `https://www.industrial-mathematics.org/workshop-jane-doe/signoff/` (with y
 - **Find:** type part of a path to jump to it. The address keeps the view, so you can send a link to one file.
 
 Things to try: switch to **Generation**, then **Human review**: where did AI do a lot and people check little?
-Then **Findings**: which of those has never had an independent review (F-)? Part 4's reviews change that:
-after their merge, `analysis/` turns from grey to a findings colour.
+Then **Findings**: which of those has never had an independent review (F-)? IMGAgent's review in part 4 changed that
+for `analysis/`: its files show their own findings colour. Review another folder and watch it change.
 
 The workflow rebuilds the site on every push to `main`, so the report stays current. On a pull request it builds
 the site with the report too, marks the lines the pull request changes, and keeps the built site as the

@@ -212,62 +212,37 @@ pull_request("IMGAgent: Declare paper/", "Declare paper/ (signoff request #7)",
              annotate("paper/", "-g", "G1", "-H", "H2", "-a", "A0", "--assisted-by", "GPT Sol (OpenAI)",
                       "--reviewed-by", "Jane Doe"), imgagent, author="imgagent[bot]")
 
-# 4 optional: an A1 attestation recorded by IMGAgent into SIGNOFF.toml (attest --signoff)
-git("checkout", "-q", "main")
-p = sh("aisignoff", "attest", "analysis/fit_cooling.py", "-a", "A1", "--signoff",
-       "--ai-reviewed-by", "Claude Opus 5.5 (Anthropic), new session", check=False)
-results.append(("attest -a A1 without --findings is refused", p.returncode, 1, p.returncode != 0, "", (p.stdout + p.stderr).strip()))
-git("checkout", "-q", "--", ".")
-pull_request("IMGAgent: A1 attestation, findings none", "Attest analysis/fit_cooling.py (signoff request #9)",
-             lambda: sh("aisignoff", "attest", "analysis/fit_cooling.py", "-a", "A1", "--findings", "none", "--signoff",
-                        "--ai-reviewed-by", "Claude Opus 5.5 (Anthropic), new session without the generating conversation"),
-             imgagent, author="imgagent[bot]")
+# 4 exercise 3: "@IMGAgent review analysis with notes": a quick A1 review, recorded as one record file in reviews/
+# (aisignoff attest -a A1 --findings <level> --to <file>, once per findings level), in a pull request that only
+# adds that file and needs no declaration
+REVIEW_RECORD = "reviews/2026-11-27-review-analysis.toml"
+REVIEWED_BY = ("Claude Sonnet 5.5 (Anthropic), new session without the generating conversation, quick review "
+               "requested in https://github.com/jane-doe/workshop-jane-doe/issues/9#issuecomment-1")
 
 
-# 4 optional (new): an independent AI review as a review pull request: report + record file, nothing else
-def upload_sha():
-    return git("log", "--format=%H", "--grep", "Add the coffee cooling project", "origin/main").stdout.strip()
-
-
-REPORT = "# Review of analysis/fit_cooling.py\n\nModel: GPT Sol (OpenAI)\n\n## Findings\n\n- minor: the fit ignores ...\n"
-
-
-def review_pr(record_extra="", findings='"minor"', also=None, report=True):
+def imgagent_review(findings="minor", also=None):
     def change():
-        if report:
-            write("reviews/fit-cooling.md", REPORT)
-        write("reviews/fit-cooling.toml", textwrap.dedent(f"""\
-            [[attestations]]
-            commit = "{upload_sha()}"
-            path = "analysis/fit_cooling.py"
-            AI-Review = "A2"
-            AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling.md"
-            AI-Review-Findings = {findings}
-            """) + record_extra)
+        sh("aisignoff", "attest", "analysis/fit_cooling.py", "-a", "A1", "--findings", findings,
+           "--ai-reviewed-by", REVIEWED_BY, "--to", REVIEW_RECORD)
         if also:
             also()
     return change
 
 
-pull_request("review PR: record file without findings (red)", "Review of fit_cooling.py",
-             review_pr(findings='""'.replace('""', '"TODO"')), desc([]), expect=1, merge=False)
-PR[0] -= 1
-pull_request("review PR: record file without its report (red)", "Review of fit_cooling.py",
-             review_pr(report=False), desc([]), expect=1, merge=False)
-PR[0] -= 1
-pull_request("review PR: record file + an edit elsewhere (red)", "Review of fit_cooling.py",
-             review_pr(also=lambda: write("notes/lab-notes.md", (repo / "notes/lab-notes.md").read_text() + "\nmore\n")),
+pull_request("IMGAgent review + an edit elsewhere (red)", "Record a quick review of analysis (A1, highest finding: minor)",
+             imgagent_review(also=lambda: write("notes/lab-notes.md", (repo / "notes/lab-notes.md").read_text() + "\nmore\n")),
              desc(["G0", "H2", "A0"]), expect=1, merge=False)
 PR[0] -= 1
-pull_request("review PR: report + record file, description untouched", "Review of analysis/fit_cooling.py (A2, findings: minor)",
-             review_pr(), desc([]))
+pull_request("IMGAgent review: one record file, no declaration", "Record a quick review of analysis (A1, highest finding: minor)",
+             imgagent_review(), "## What does this PR change?\n\nRecords the quick AI review ...\n\nThis pull request only "
+             "adds a record to the review folder, so it needs no AI declaration.\n", author="imgagent[bot]")
 
 
 def edit_review():
-    write("reviews/fit-cooling.md", REPORT + "\nedited\n")
+    write(REVIEW_RECORD, (repo / REVIEW_RECORD).read_text().replace('"minor"', '"none"'))
 
 
-pull_request("edit of an earlier review (add-only: red)", "Fix the review", edit_review, desc(["G0", "H2", "A0"]),
+pull_request("edit of an earlier review (add-only: red)", "Clear the finding", edit_review, desc(["G0", "H2", "A0"]),
              expect=1, merge=False)
 PR[0] -= 1
 

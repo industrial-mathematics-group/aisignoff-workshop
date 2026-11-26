@@ -38,8 +38,9 @@ steps on this repository on the projector. Then IMGAgent, the documentation site
       to raise.
 - [ ] IMGAgent runs the release with the `setup` commands (`@IMGAgent help` lists `setup reuse|aisignoff|citation|docs`).
       Try `@IMGAgent setup aisignoff` and `setup docs` in a test repository: the form, **Done**, the pull request.
-- [ ] Check that IMGAgent records an AI review with its findings (part 4, optional A1): it should ask for them
-      when they are missing, as the issue form does.
+- [ ] Try `@IMGAgent review analysis with notes` in a test repository with the sample project (part 4,
+      exercise 3): the answer with findings, and the pull request *Record a quick review of analysis …* that
+      only adds a file to `reviews/` and goes green without a declaration.
 
 ### The day before: IMGAgent and the repositories
 
@@ -101,14 +102,13 @@ repository that already has `SIGNOFF.toml`, a docs site or `CITATION.cff` gets "
 | 0:35 | [3 Set up](03-setup.md) D | The IMGAgent form: show *⋯ → Edit* for the values once on the projector. Explain `[history]` while the checks run |
 | 0:55 | [3 Set up](03-setup.md) E–F | The red→green moment in F is the payoff: give it time |
 | 1:10 | Break | |
-| 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time. The A2 review pull request is optional: do it on the projector if time is short |
+| 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time, then the review (exercise 3): start it before the last signoff, it takes a minute or two |
 | 1:40 | [5 Website](05-pages.md) | `setup docs`, then the workflow as a pull request. While the deploy job runs: explain the findings axis and F- |
 | 1:55 | [6 Zenodo](06-zenodo.md) | Sandbox only. Archiving takes a few minutes: start the release, then talk |
 | 2:15 | [7.1 Basic agent workflow](07-advanced.md#71--a-basic-agent-workflow-claude-on-the-web) | Live: task → pull request → inspect → merge. About 15 min |
 | 2:30 | [7.2 Showcase](07-advanced.md#72--showcase-an-advanced-setup) | Demonstration only, no setup. About 15 min |
 
-Short on time: skip step F's "break it on purpose", step G (REUSE), the optional parts of 4 (show the A2 review
-pull request on the projector instead), and step 4 of part 6.
+Short on time: skip step F's "break it on purpose", step G (REUSE), the optional part of 4 (`update`), and step 4 of part 6.
 
 ## What to say at each step (talking points)
 
@@ -122,11 +122,13 @@ pull request on the projector instead), and step 4 of part 6.
   because *Repository admin* was an "always" bypass, and a bypass also lifts force-push protection. "For pull
   requests only" is the safe way out. Come back to it in 7.2 (an agent as its own GitHub App can't bypass).
 - **2:** the reviewer only reviews; its findings are recorded and shown (F0–F3, F-), never a gate. A1 says what
-  it found too, so that there is a reference for what a different model finds at A2.
+  it found too, so that there is a reference for what a different model finds at A2. Part 4's
+  IMGAgent review is such an A1: a quick check, not a full review.
 - **4:** IMGAgent writes declarations, it doesn't decide them: the person checks the diff and ticks. Each
   request costs the group a few cents. Who writes what: `SIGNOFF.toml` is what a person signs off (IMGAgent's
   pull requests, which you merge); AI reviews go into `reviews/`, add-only, in pull requests of their own that
-  need no declaration.
+  need no declaration (IMGAgent's review pull request is one). Each file gets its own findings level: point
+  at the per-file list in the pull request.
 - **5:** the report is public with the text of each file. The header's two flags (share without independent AI
   review, share with an open major or critical finding) are the quickest summary of a repository. The report
   lives in the docs site, so a repository keeps one Pages site for both.
@@ -146,7 +148,7 @@ pull request on the projector instead), and step 4 of part 6.
 | "already has a `SIGNOFF.toml`" (or another file) | The file exists, e.g. in an own repository: skip the step, or change it with `@IMGAgent update SIGNOFF.toml` |
 | A required check can't be found in the ruleset | It hasn't run in this repository yet, or the name differs: it's `pr-signoff / check`, `file-signoff / lint` |
 | PR-signoff stays red after ticking | Two G boxes, G1–G3 without a model, no H ticked, A1–A3 without `AI-Review-Findings:`, or the page wasn't reloaded. **Details** says which |
-| The A2 review pull request is red | The record file's `commit` isn't a commit of `main` (copy the full hash from the file's **History**), the report path in `AI-Reviewed-by` differs from the report's name, the report is missing from the pull request, or the pull request also changes something outside `reviews/` |
+| IMGAgent's review answers but opens no pull request | No `SIGNOFF.toml` on `main` yet, or aisignoff refused the record: the answer says why. The findings are still in the answer |
 | A correction to a review is red | `reviews/` is add-only: a changed or deleted file there fails. Close it and record the corrected review in a new file |
 | IMGAgent doesn't answer | Not installed on that repository (check *Settings → GitHub Apps*), the command is inside a code box or quote, or no folder was named. `@IMGAgent help` tests it |
 | IMGAgent's signoff refuses | No `SIGNOFF.toml` on `main` yet (step D's pull request not merged), or a path that doesn't exist on `main` |

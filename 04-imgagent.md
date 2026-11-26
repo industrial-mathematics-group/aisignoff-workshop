@@ -3,8 +3,8 @@
 # 4 · IMGAgent
 
 **IMGAgent** is the group's assistant on GitHub; you met it in part 3, setting up `SIGNOFF.toml`. You talk to it by writing `@IMGAgent` and a command in an
-issue (or a comment in one). It answers questions about the files of a repository, and it writes declarations
-into `SIGNOFF.toml` for you. It only answers people with write access to the repository, and it never changes
+issue (or a comment in one). It answers questions about the files of a repository, writes declarations
+into `SIGNOFF.toml` for you, and reviews files. It only answers people with write access to the repository, and it never changes
 `main` by itself: whatever it changes comes as a pull request that you check and merge.
 
 Pascal has installed it on your workshop repository. Check: **Settings → GitHub Apps** lists **IMGAgent**.
@@ -14,6 +14,7 @@ Pascal has installed it on your workshop repository. Check: **Settings → GitHu
 | `@IMGAgent ask <folders>` and a question | Answers from the files in those folders. Changes nothing |
 | `@IMGAgent signoff` and your words | Records how files were made and reviewed: a pull request that changes `SIGNOFF.toml` |
 | `@IMGAgent update <folders> with <folders>` and a task | Edits files in the first folders, reading the others; opens a pull request |
+| `@IMGAgent review <folders> with <folders>` | A quick AI review (A1) of the first folders, reading the others; opens a pull request that records it in `reviews/` |
 | `@IMGAgent make docs` | Writes a documentation site in `docs/`; opens a pull request |
 | `@IMGAgent setup aisignoff`, `reuse`, `docs` or `citation` | A form for `SIGNOFF.toml`, `REUSE.toml`, `zensical.toml` or `CITATION.cff`, filled in with defaults; ticking **Done** opens a pull request, without AI (you used it in part 3) |
 | `@IMGAgent help` | The list of commands |
@@ -81,68 +82,46 @@ G2, `results` at G3, `paper` at G1.
 Prefer a form? **Issues → New issue → Signoff: declare or attest files** asks the same questions as drop-downs,
 without AI. The result is the same kind of pull request.
 
-## Optional · Record a fresh-session check, A1 (5 min)
+## Exercise 3 · Let IMGAgent review a folder (10 min)
 
-Open a **new** chat in an AI tool you use (no earlier conversation), paste `analysis/fit_cooling.py` and ask it
-to look for mistakes, and to say how bad the worst one is (`none`, `trivial`, `minor`, `major`, `critical`).
-Record what it found, in a new issue:
+`SIGNOFF.toml` says **A0** everywhere: no independent AI has checked anything yet. IMGAgent can do a quick
+check and record it for you.
 
-```text
-@IMGAgent signoff
-A fresh Claude session, without the original conversation, reviewed analysis/fit_cooling.py
-as it is now and found nothing to fix. Please record it as an AI review, A1, findings: none.
-```
-
-That's an **attestation**: it raises the review of the file as it is now, and keeps how it was made. Every AI
-review says what it found, A1 too: without the findings IMGAgent asks for them. You recorded this one yourself,
-so it goes into `SIGNOFF.toml` like your other signoffs.
-
-## Optional · An independent AI review as its own pull request, A2 (15 min)
-
-A review by a **different** model, with a written report, is A2. It doesn't touch `SIGNOFF.toml`: it goes into
-the **review folder** `reviews/`, in a pull request that adds only the report and a small record file.
-
-1. **The review.** In a new chat with a different model than the one that wrote the file (the story says
-   Claude wrote `analysis/`, so use ChatGPT, GPT Sol), paste `analysis/fit_cooling.py` and ask:
+1. **Issues → New issue.** Title: `Review: analysis`. Text (the line after the command is optional and says
+   what to look at):
 
    ```text
-   Review this script. Change nothing. Write a short report in Markdown: one line per finding, each with
-   its severity (trivial, minor, major or critical), and at the top the most severe one ("none" if you
-   found nothing).
+   @IMGAgent review analysis with notes
+   Does the fit make assumptions the lab notes say might not hold?
    ```
 
-2. **The commit it reviewed.** Open `analysis/fit_cooling.py` in your repository → **History** → the commit
-   *Add the coffee cooling project* → the copy icon next to its short hash (it copies the full hash).
-3. **The report.** **Add file → Create new file**, name `reviews/fit-cooling-review.md`, paste the report.
-   **Commit changes… → Create a new branch … and start a pull request → Propose changes**, but **don't create the
-   pull request yet**.
-4. **The record file.** Switch to the new branch (the branch menu at the top left of the file list) → **Add
-   file → Create new file**, name `reviews/fit-cooling-review.toml`, and fill in the hash and the worst finding:
+   The folders before `with` are reviewed; the `with` folders are only read, as context. **Create.**
+2. After a minute or two IMGAgent answers with its findings, each with a severity (`trivial`, `minor`,
+   `major` or `critical`), and the highest one. Claude Sonnet reviews in a **new session**, without the
+   conversation that wrote the files: that's **A1**.
+3. It also opens a pull request: **Record a quick review of analysis (A1, highest finding: …)**. It only adds
+   one small record file to the review folder `reviews/`, so its **AI declaration stays unticked**: a review
+   is not content. PR-signoff says so in **Details**. Read the findings in its description: are they fair?
+   Then merge it.
 
-   ```toml
-   [[attestations]]
-   commit = "paste the full hash here"
-   path = "analysis/fit_cooling.py"
-   AI-Review = "A2"
-   AI-Reviewed-by = "GPT Sol (OpenAI), reviews/fit-cooling-review.md"
-   AI-Review-Findings = "minor"
-   ```
+✅ **Check:** **Actions → File-signoff →** the newest run on `main`: `analysis` is at **A1** now. In the
+report (part 5), the **Findings** axis colours each file of `analysis/` by its own highest finding: **F0** for
+`none` or `trivial`, **F1** `minor`, **F2** `major`, **F3** `critical`. The other folders stay grey (**F-**):
+no independent AI has seen them.
 
-   **Commit directly to the branch.** Then **Pull requests → Compare & pull request → Create pull request**.
-5. **Leave the AI declaration unticked.** The pull request only adds files to `reviews/`: it is a review, not
-   content, and needs no declaration. PR-signoff says so in **Details**. Merge it.
-
-✅ **Check:** in the report (part 5), `analysis/` is at **A2**, and on the **Findings** axis at **F1** if the
-worst finding was `minor` (F0 for `none` or `trivial`).
+*Own repository:* review a folder you care about, with the folders that explain it after `with`, e.g.
+`@IMGAgent review docs with src` (do the docs still describe the code?).
 
 Good to know:
 
-- **Add-only.** A pull request that changes or deletes a file in `reviews/` fails. A second review, such as
-  the one after a fix, goes into a new file.
-- **A record file comes alone.** A pull request that adds one and changes anything outside `reviews/` fails:
-  a change's own review is declared in its description (A2 with the report and the findings line).
-- **The author never clears a finding.** Fixing is the author's work, in a pull request of its own; the fixed
-  lines go back to F- until the next independent review attests both commits, the reviewed one and the fix.
+- **A finding doesn't block anything.** It is recorded and shown. Fixing is up to you, in a pull request of
+  its own; the fixed lines go back to **F-** until the next review. The author never clears a finding:
+  review again (`@IMGAgent review analysis`), which adds a new record file.
+- **Add-only.** A pull request that changes or deletes a file in `reviews/` fails.
+- **A1 is a quick check.** A thorough review by a **different** model with a written report is **A2**; how to
+  record one is in [part 7](07-advanced.md) and the [maintainer cheat sheet](maintainer-cheat-sheet.md#9-pr-messages-what-maintainers-check).
+- IMGAgent always reviews `main`, also when you ask in a pull request. A pull request's own review goes into
+  its description; IMGAgent's answer has the three lines to copy.
 
 ## Optional · Let it change something
 
