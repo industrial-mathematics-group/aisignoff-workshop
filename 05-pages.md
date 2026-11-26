@@ -1,55 +1,49 @@
-[← 4 IMGAgent](04-imgagent.md) · **5 The report on GitHub Pages** · [6 Releases and DOIs →](06-zenodo.md)
+[← 4 IMGAgent](04-imgagent.md) · **5 A website with the report** · [6 Releases and DOIs →](06-zenodo.md)
 
-# 5 · The report on GitHub Pages
+# 5 · A website with the report
 
 aisignoff can draw an **interactive report** of a repository, like a coverage report for AI use: a sunburst
-of the folders, a table per folder, and every file line by line, coloured by its levels. GitHub Pages
-publishes it as a website at `https://www.industrial-mathematics.org/<your repository>/signoff/`.
-File-signoff writes the report on every run already; one switch makes it publish it too.
+of the folders, a table per folder, and every file line by line, coloured by its levels. It belongs on the
+repository's **documentation website**, next to the docs: GitHub Pages publishes the site at
+`https://www.industrial-mathematics.org/<your repository>/`, and the report at `…/signoff/`. IMGAgent sets the
+site up, and the group's *Zensical docs* workflow builds it with the report on every change to `main`.
 
 ## Step 1 · Turn Pages on (1 min)
 
 **Settings → Pages → Build and deployment → Source:** **GitHub Actions**.
 
-## Step 2 · Switch it on in File-signoff, as a pull request (5 min)
+## Step 2 · Set up the site with IMGAgent (5 min)
 
-1. In your repository, open `.github/workflows/file-signoff.yml` and click the **pencil** (*Edit this file*).
-2. Under `permissions:`, remove the `# ` in front of the two lines `pages: write` and `id-token: write`.
-3. At the bottom, remove the `# ` in front of `with:` and of `pages: true`. Keep the indentation: `with:` lines
-   up with `uses:`, and `pages: true` is two spaces further in. The changed parts then look like this:
+1. **Issues → New issue.** Title: `Documentation site`. Text: `@IMGAgent setup docs`. **Create.**
+2. IMGAgent answers with a form: the site's name and description (from your repository) and its address.
+   Set the address to `https://www.industrial-mathematics.org/workshop-jane-doe/` with your repository's name
+   (**⋯ → Edit**, change the text between the backticks, **Update comment**).
+3. Tick **Done**. The pull request **Set up zensical.toml** adds the site's settings, `zensical.toml`, and a
+   first page, `docs/index.md`. Written from the form, without AI: **G0** is ticked. Tick your human review,
+   merge.
 
-   ```yaml
-   permissions:
-     contents: write
-     pull-requests: write   # only for the setup pull request in a repository without SIGNOFF.toml
-     pages: write          # with "pages: true" below: publish the report on GitHub Pages
-     id-token: write       # (both lines, and Settings → Pages → Source: "GitHub Actions")
+Want real pages instead of the placeholder? `@IMGAgent make docs` has Claude write `docs/` from your files,
+as a pull request declared G3. Optional, and it takes a few minutes.
 
-   jobs:
-     file-signoff:
-       uses: industrial-mathematics-group/.github/.github/workflows/file-signoff.yml@main
-       with:
-       #   weight: lines                 # weight the badges by lines instead of files
-       #   ...
-         pages: true                   # publish the folder report on GitHub Pages (replaces the Pages site)
-       #   pages-path: /aisignoff/       # where in the site: https://<owner>.github.io/<repo>/aisignoff/ ("/": the root)
-   ```
+## Step 3 · Add the Zensical docs workflow (5 min)
 
-   The other lines stay commented out. `pages-path` moves the report elsewhere in the site, for example
-   `pages-path: /` for the front page; the default `/signoff/` is what we use today.
-4. **Commit changes… → Create a new branch … and start a pull request → Propose changes → Create pull request.**
-5. Declare it: you changed the lines yourself, following this page, so **G0**, **A0**, and **H1** (you read what
-   you changed).
-6. Green: **Merge pull request → Confirm merge.**
+1. **Actions → New workflow → Zensical docs → Configure.** Don't change anything.
+2. **Commit changes… → Create a new branch for this commit and start a pull request → Propose changes →
+   Create pull request.** (`main` is protected since part 3, so even a workflow comes as a pull request.)
+3. Declare it like the REUSE workflow: a file copied from the group's templates, which were written with Claude:
+   **G3**, **Claude Opus**, **H1** (you read it), **A0**. The check **docs / build** builds the site once as a
+   test: wait for it to turn green.
+4. **Merge pull request → Confirm merge.**
 
-✅ **Check:** **Actions → File-signoff →** the run on `main` now has a fourth job, **pages** (about a minute
-after lint). Its summary shows the address of the report.
+✅ **Check:** **Actions → Zensical docs →** the run on `main` has two jobs, **build** and **deploy** (about a
+minute). The summary of **build** says *AI signoff report: added to the site at `signoff/index.html`*, and
+**deploy** shows the address of the site.
 
-## Step 3 · Look at your report (5 min)
+## Step 4 · Look at your report (5 min)
 
-Open `https://www.industrial-mathematics.org/workshop-jane-doe/signoff/` (with your repository's name; the
-address without `signoff/` leads there too). To have the link on your front page: the **⚙** next to *About* →
-tick **Use your GitHub Pages website** → **Save**.
+Open `https://www.industrial-mathematics.org/workshop-jane-doe/signoff/` (with your repository's name; without
+`signoff/` you get the site's front page). To have the link on your repository's front page: the **⚙** next to
+*About* → tick **Use your GitHub Pages website** → **Save**.
 
 - **The header:** the mix of each axis, and two flags: the share of lines **without independent AI review**
   (F-) and the share with an **open major or critical finding** (F2, F3).
@@ -65,9 +59,12 @@ Things to try: switch to **Generation**, then **Human review**: where did AI do 
 Then **Findings**: which of those has never had an independent review (F-)? Part 4's reviews change that:
 after their merge, `analysis/` turns from grey to a findings colour.
 
-> The report is public, with the text of every file, like the repository itself. A repository has one Pages
-> site, and each deployment replaces all of it: a repository with a documentation site leaves `pages` off and
-> writes the report into that site instead (see the [maintainer cheat sheet](maintainer-cheat-sheet.md#6-documentation)).
+The workflow rebuilds the site on every push to `main`, so the report stays current. On a pull request it builds
+the site with the report too, marks the lines the pull request changes, and keeps the built site as the
+artifact **site** of the run (*Actions →* the run *→ Artifacts*).
+
+> The report is public, with the text of every file, like the repository itself. Repositories with a Julia
+> package put it into their Documenter docs instead (see the [maintainer cheat sheet](maintainer-cheat-sheet.md#6-documentation)).
 
 ---
 

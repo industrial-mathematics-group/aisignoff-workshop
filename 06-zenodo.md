@@ -1,4 +1,4 @@
-[← 5 The report on GitHub Pages](05-pages.md) · **6 Releases and DOIs** · [7 Advanced →](07-advanced.md)
+[← 5 A website with the report](05-pages.md) · **6 Releases and DOIs** · [7 Advanced →](07-advanced.md)
 
 # 6 · Releases and DOIs with Zenodo
 
@@ -30,11 +30,16 @@ test DOIs. Real Zenodo records can't be deleted, so practise here.
 `CITATION.cff` says who the authors are and how to cite the files. GitHub then shows **Cite this repository**
 in the sidebar, and Zenodo takes the title and authors from it.
 
-1. Copy [`templates/CITATION.cff`](templates/CITATION.cff) from this workshop repository.
-2. In your repository: **Add file → Create new file**, name `CITATION.cff`, paste, and put in **your** name
-   (and your ORCID, if you have one).
-3. Pull request as usual. Declare it: the template was written with Claude and you filled it in, so **G1**,
-   **Claude Opus**, **H2**, **A0**. Merge.
+1. In a new issue, write `@IMGAgent setup citation`. The form is filled in from your repository: title,
+   you as the first author, licence, address, description.
+2. Put in your name as `Given Family` and your ORCID, if you have one (**⋯ → Edit**, the values between the
+   backticks). Add co-authors on the next lines if you like.
+3. Tick **Done**. The pull request **Set up CITATION.cff** is declared **G0** (a form, no AI): check the file,
+   tick your human review (**H2**), merge.
+
+Optional: **Actions → New workflow → Citation** checks `CITATION.cff` whenever it changes, so that a mistake is
+found before a release. Add it as a pull request, declared like the other workflows from the group's templates
+(**G3**, **Claude Opus**, **H1**, **A0**).
 
 Optional, the same way: [`templates/signoff-release.yml`](templates/signoff-release.yml) as
 `.github/workflows/signoff-release.yml` attaches the aisignoff report to every release. Declare it as a copied
@@ -84,4 +89,4 @@ publish: it stays public for good.
 
 ---
 
-[← 5 The report on GitHub Pages](05-pages.md) · [7 Advanced →](07-advanced.md)
+[← 5 A website with the report](05-pages.md) · [7 Advanced →](07-advanced.md)

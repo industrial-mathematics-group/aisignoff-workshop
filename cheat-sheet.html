@@ -31,7 +31,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
 </style></head><body>
 <header>
   <div><h1>Cheat sheet: GitHub and AI signoff</h1>
-  <div class="sub">Everything in the web browser. Workshop of 27 November 2026 · aisignoff 0.20.1.</div></div>
+  <div class="sub">Everything in the web browser. Workshop of 27 November 2026 · aisignoff 0.24.0.</div></div>
   <div class="url">Workshop<br><b>github.com/industrial-mathematics-group/aisignoff-workshop</b></div>
 </header>
 
@@ -94,6 +94,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
     <blockquote>@IMGAgent signoff<br>I checked results/summary.md line by line against the data. Please record H2, reviewer Jane Doe.</blockquote>
     <b>ask</b> answers from those folders only. <b>signoff</b> confirms or asks → opens a pull request on <code>SIGNOFF.toml</code> → check <i>Files changed</i>, tick your human review, merge. One at a time. An AI review needs its findings (<i>A1, findings: none</i>).
     Without AI: <i>New issue → Signoff: declare or attest files</i>. <code>@IMGAgent help</code>
+    <br><b>Set up a file:</b> <code>@IMGAgent setup aisignoff</code> · <code>reuse</code> · <code>docs</code> · <code>citation</code> → a form with defaults → change what you need → tick <b>Done</b> → a pull request (G0).
   </div>
   <div class="box">
     <h2>Golden rules</h2>
@@ -105,7 +106,7 @@ footer { color: #57606a; font-size: 7pt; border-top: 0.5pt solid #d0d7de; paddin
   <div class="box">
     <h2>Releases and DOIs (Zenodo)</h2>
     <ol>
-      <li><b>Once:</b> log in at zenodo.org with GitHub → <i>GitHub</i> → <b>Sync now</b> → switch the repository <b>On</b>; add a <code>CITATION.cff</code>.</li>
+      <li><b>Once:</b> log in at zenodo.org with GitHub → <i>GitHub</i> → <b>Sync now</b> → switch the repository <b>On</b>; add a <code>CITATION.cff</code> (<code>@IMGAgent setup citation</code>).</li>
       <li><b>Each release:</b> <i>Releases → Draft a new release</i> → new tag <code>v1.0.0</code> → <b>Publish release</b>.</li>
       <li>Zenodo archives it and mints a DOI: <b>version DOI</b> (cite in papers) and <b>concept DOI</b> (always the newest; README badge).</li>
       <li>Practise on <b>sandbox.zenodo.org</b>: real DOIs can't be deleted.</li>

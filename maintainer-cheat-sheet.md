@@ -1,7 +1,7 @@
 # Maintainer cheat sheet: preparing a repository for AI signoff
 
-For repositories in **industrial-mathematics-group**, as of aisignoff **0.20.1** and the organisation's
-`.github` repository (24 November 2026). Reference setups: **aisignoff-playground** (Python, Zensical) and
+For repositories in **industrial-mathematics-group**, as of aisignoff **0.24.0** and the organisation's
+`.github` repository (26 November 2026). Reference setups: **aisignoff-playground** (Python, Zensical) and
 **HyperCloudCore.jl** (Julia, Documenter). Full text: `SETUP.md` in `industrial-mathematics-group/.github`.
 
 ## 0. Organisation, once (admins)
@@ -9,11 +9,13 @@ For repositories in **industrial-mathematics-group**, as of aisignoff **0.20.1**
 - *Organisation settings → Actions → General*: allow `actions/*` and the actions the packages use
   (julia-actions, codecov, TagBot).
 - *Workflow permissions*: **Read and write permissions**, and tick **Allow GitHub Actions to create and approve
-  pull requests** (the File-signoff setup PR, CompatHelper and Documenter need it).
+  pull requests** (CompatHelper and Documenter need it; the signoff workflows ask for their own permissions).
 - The `.github` repository stays **public**, with *Settings → Actions → General → Access*: **Accessible from
   repositories in the organization** (else no repository can call the reusable workflows).
-- **IMGAgent** (GitHub App, replaces the old `@signoff` workflows): installed per repository under
-  *Organisation settings → GitHub Apps → IMGAgent → Configure*.
+- **IMGAgent** (GitHub App, replaces the old `@signoff` workflows and the File-signoff setup PR): installed per
+  repository under *Organisation settings → GitHub Apps → IMGAgent → Configure*. It writes `SIGNOFF.toml`,
+  `REUSE.toml`, `zensical.toml` and `CITATION.cff` from forms (`@IMGAgent setup …`, §3, §6, §8), but never
+  workflows: those come from the templates below.
 
 ## 1. Merge settings (*Settings → General → Pull Requests*)
 
@@ -33,40 +35,33 @@ The templates are thin callers of the reusable workflows in `.github`; copying b
 | Workflow file | What it does | Check name to require |
 |---|---|---|
 | `pr-signoff.yml` | Checks the ticked AI declaration of every PR into `main` (with `SIGNOFF.toml`: also every file/line of the merge preview, under the base branch's `[policy]`); sets `ai:G*`, `human:H*`, `ai-review:A*` labels | **`pr-signoff / check`** |
-| `file-signoff.yml` | `aisignoff lint` on push, PR, merge queue; folder tree in the job summary, HTML report as artifact; file badges (generation, human review, AI review, findings) on `main`; **opens a setup PR if there is no `SIGNOFF.toml`**; optionally the report on Pages | **`file-signoff / lint`** |
-| `signoff-badges.yml` | Badges of the declarations of merged PRs | none |
-| `zensical-docs.yml` | Builds `docs/` + `zensical.toml` on PRs that touch them, deploys to Pages from `main` | none (path-filtered, see §4) |
+| `file-signoff.yml` | `aisignoff lint` on push, PR, merge queue; folder tree in the job summary, HTML report as artifact; file badges (generation, human review, AI review, findings) on `main`. Without `SIGNOFF.toml` it skips with a warning | **`file-signoff / lint`** |
+| `signoff-badges.yml` | Badges of the declarations of merged PRs (`aisignoff badge --commits`) | none |
+| `zensical-docs.yml` | Builds `docs/` + `zensical.toml` (on PRs that touch them, and every push to `main`), adds the aisignoff report at `/signoff/` when there is a `SIGNOFF.toml`, deploys to Pages from `main` | none (path-filtered on PRs, see §4) |
+| `reuse.yml` | `reuse lint`: copyright and licence of every file (`REUSE.toml`, `LICENSES/`) | **`reuse / lint`** |
+| `citation.yml` | Validates `CITATION.cff` when it changes | none (path-filtered) |
+| `links.yml` | Dead links in the Markdown files (lychee), on PRs that change them and weekly | none |
 
 Useful inputs (`with:` in the caller): `weight: lines` (File-signoff badges by lines; the Julia repos and the
-playground use it), `aisignoff-version` (pin a different release than the org default, §10),
-`setup: false`, `setup-history: false`, `pages: true` and `pages-path` (File-signoff, below),
-`allow-policy-change: admin,maintain` (PR-signoff),
-`zensical-version`, `deploy: false`.
+playground use it), `aisignoff-version` (pin a different release than the org's, §10),
+`allow-policy-change: admin,maintain` (PR-signoff), `zensical-version`, `deploy: false`, `signoff-report: false`
+and `signoff-report-path` (Zensical docs).
 
-The File-signoff template's caller has `pull-requests: write`; keep it, or the setup PR can't be opened (the
-branch is still pushed and the job summary links to a prefilled PR).
-
-**The report on Pages.** `pages: true` makes File-signoff deploy the HTML report to GitHub Pages on pushes to
-`main`, at `https://industrial-mathematics-group.github.io/<repo>/signoff/` (`pages-path`, default `/signoff/`;
-`/` for the root, which otherwise redirects to it). Needs *Settings → Pages → Source: GitHub Actions* and
-`pages: write` + `id-token: write` in the caller (commented out in the template). A deployment replaces the whole
-site: repositories with a docs site keep it off and use §6.
+File-signoff's old inputs `setup`, `setup-recheck`, `setup-history`, `pages` and `pages-path` do nothing any more
+(a warning says so): delete them from older callers, together with `pull-requests: write`, `pages: write` and
+`id-token: write`. The report on a website is part of the documentation (§6).
 
 ## 3. `SIGNOFF.toml`
 
-**Easiest: let File-signoff set it up.** Add the workflow and push to `main` (or *Run workflow*). Without a
-`SIGNOFF.toml` it skips the check with a warning and opens the PR *"Set up aisignoff (SIGNOFF.toml with TODOs to
-fill in)"* from the branch `aisignoff-setup`, with the org defaults: `[history]` on, and a `**` annotation with
-every level and `Reviewed-by` set to `TODO`.
+**Easiest: let IMGAgent set it up.** Write `@IMGAgent setup aisignoff` in an issue. IMGAgent answers with a
+form, filled in with defaults: the `**` declaration (G0 · H2 · A0, you as `Reviewed-by`), `[history]` with the
+default branch and the merge method, and optionally `exclude` and `[policy]`. Tick boxes in place, change values
+between backticks via *⋯ → Edit*, then tick **Done** (or reply `@IMGAgent setup aisignoff done`). It checks the
+result with aisignoff and opens the PR *Set up SIGNOFF.toml*, declared G0 with you as responsible person: tick
+your human review and merge. Then add annotations for folders that differ with `@IMGAgent signoff` (§7).
+The form's `[review] recheck` option is gone in aisignoff since 1.0.0rc9: `lint` warns about it, delete the line.
 
-1. Check out `aisignoff-setup`, fill in the `TODO`s with what is true for most of the repository, add
-   annotations for folders that differ (`aisignoff annotate`), put files that need no declaration into `exclude`
-   (e.g. `docs/build/**`). The review folder `reviews/` is left out by itself: no `exclude` for it.
-2. Push. Checks only start with that push (GitHub doesn't run workflows on PRs opened by the workflow token);
-   File-signoff stays red until no `TODO` is left.
-3. Tick the human review box you did, merge. To get a fresh setup PR later, delete the `aisignoff-setup` branch.
-
-**By hand:** `pipx install aisignoff==0.20.1`, then `aisignoff init -g … -H … -a … --reviewed-by … --history`
+**By hand:** `pipx install aisignoff==0.24.0`, then `aisignoff init -g … -H … -a … --reviewed-by … --history`
 and `aisignoff annotate …`, then `aisignoff lint`. `init` also adds a section to `AGENTS.md` (and `CLAUDE.md`)
 that points agents to `aisignoff guide`; `--no-agents-md` skips it, `aisignoff guide --agents-md` adds it later.
 
@@ -112,17 +107,17 @@ folder, `[[attestations]]` with `AI-Review`, `AI-Reviewed-by`, `AI-Review-Findin
 **Housekeeping.** Records that cover no line any more (deleted file, rewritten content) are no error; `lint`
 counts them, `aisignoff gc --dry-run` lists them, `aisignoff gc` in a PR deletes them (the one deletion the
 add-only review folder allows). There is no `freeze` or `SIGNOFF.snapshot.json` any more: every line is worked
-out from the history, and a blame cache in `.git/aisignoff` keeps it fast (in CI: `actions/cache` on that path,
-see aisignoff's docs, *The blame cache*).
+out from the history, and a blame cache in `.git/aisignoff` keeps it fast (the org's workflows keep it between
+runs by themselves).
 
 ## 4. Protect `main` (*Settings → Rules → Rulesets → New branch ruleset*)
 
-- **Enforcement:** Active. **Target:** default branch (only; don't target `badges` or `aisignoff-setup`, the
-  workflows push to them as `github-actions[bot]`).
+- **Enforcement:** Active. **Target:** default branch (only; don't target `badges`, the workflows push to it as
+  `github-actions[bot]`).
 - **Require a pull request before merging.** Approvals: 0 for one-maintainer repositories (you can't approve
   your own PR); allowed merge methods: Merge.
 - **Require status checks to pass:** `pr-signoff / check`, and `file-signoff / lint` if the repository has
-  `SIGNOFF.toml`. Add the CI/test jobs as usual. Checks appear in the picker only after they ran once.
+  `SIGNOFF.toml`, `reuse / lint` with REUSE. Add the CI/test jobs as usual. Checks appear in the picker only after they ran once.
 - **Don't require `docs / build`** (or any other path-filtered check): it doesn't run on PRs that don't touch
   `docs/`, and those PRs would wait forever.
 - **Block force pushes**, **Restrict deletions**.
@@ -152,28 +147,30 @@ now). The PR badges say "no declarations yet" until a declared PR is merged.
 ```
 
 PR badges: the same with `ai-generation.json`, `ai-human-review.json`, `ai-review.json`. Link the file badges to
-the published report (Julia: `https://industrial-mathematics-group.github.io/<repo>/dev/aisignoff/`) or to the
-File-signoff workflow page.
+the published report (Zensical: `https://industrial-mathematics-group.github.io/<repo>/signoff/`; Julia:
+`https://industrial-mathematics-group.github.io/<repo>/dev/aisignoff/`) or to the File-signoff workflow page.
 
 ## 6. Documentation
 
-**Zensical (Python and other repositories).** *Settings → Pages → Source:* **GitHub Actions**; add
-`zensical-docs.yml`; set `site_url = "https://industrial-mathematics-group.github.io/<repo>/"` in
-`zensical.toml`. No site yet? Write `@IMGAgent make docs` in an issue: it opens a PR with `docs/` and a complete
-`zensical.toml`. Later: `@IMGAgent update docs with src`, `@IMGAgent ask docs`.
+**Zensical (Python and other repositories).** *Settings → Pages → Source:* **GitHub Actions**; then
+`@IMGAgent setup docs` (a form: site name, description, address; a PR with `zensical.toml` and `docs/index.md`,
+no AI) or `@IMGAgent make docs` (Claude writes `docs/` from the code, G3); then add `zensical-docs.yml` as a PR.
+`site_url` is `https://industrial-mathematics-group.github.io/<repo>/`. With a `SIGNOFF.toml`, the build adds the
+aisignoff report at `<site>/signoff/`, on every push to `main`; PRs mark their changed lines in it and upload the
+built site as the artifact `site`. Later: `@IMGAgent update docs with src`, `@IMGAgent ask docs`.
 
 **Documenter (Julia).** The report is a page of the docs, as in the four Julia repositories:
 
 1. In the docs job of `CI.yml`: `fetch-depth: 0` on checkout, then before `make.jl`
    ```yaml
+   - uses: industrial-mathematics-group/.github/actions/setup-aisignoff@main   # the org's version
+     with:
+       cache: restore
    - name: AI signoff report
      continue-on-error: true
      env:
-       AISIGNOFF_VERSION: "0.20.1"   # keep at File-signoff's
-       SINCE: ${{ github.event_name == 'pull_request' && 'origin/main' || '' }}
-     run: |
-       pipx run --spec "aisignoff==${AISIGNOFF_VERSION}" aisignoff report \
-         --html docs/src/assets/aisignoff.html --title "<Package>.jl" --with-source ${SINCE:+--since "$SINCE"}
+       SINCE: ${{ github.event_name == 'pull_request' && 'HEAD^1' || '' }}
+     run: aisignoff report --html docs/src/assets/aisignoff.html --title "<Package>.jl" --with-source ${SINCE:+--since "$SINCE"}
    ```
 2. Copy `docs/src/aisignoff.md` (iframe on `assets/aisignoff.html`) from HyperCloudCore.jl and add
    `"AI Signoff Report" => "aisignoff.md"` to `pages` in `docs/make.jl`. `deploydocs` publishes it.
@@ -181,7 +178,8 @@ File-signoff workflow page.
 
 ## 7. IMGAgent
 
-Install the App on the repository (it needs a `SIGNOFF.toml`). Then group members can write
+Install the App on the repository. `@IMGAgent setup aisignoff|reuse|docs|citation` works from the start; signoff
+needs a `SIGNOFF.toml` (§3). Then group members can write
 `@IMGAgent signoff …` in an issue, in their own words, or use the issue form *Signoff: declare or attest files*;
 IMGAgent opens a PR that changes `SIGNOFF.toml`, which they review, tick and merge. An AI review recorded this
 way is one a person records, so it goes into `SIGNOFF.toml` (`attest --signoff`), and it needs its findings, A1
@@ -191,12 +189,16 @@ included. Repositories with their own
 
 Commands are action, then folders, then text (the old order `docs ask` gets a reminder): `@IMGAgent ask notes,
 analysis` and a question (answers from those folders), `@IMGAgent update docs with src` and a task (a PR),
-`@IMGAgent make docs` (a PR with a Zensical site), `@IMGAgent signoff` and your words, `@IMGAgent help`. Only
+`@IMGAgent make docs` (a PR with a Zensical site), `@IMGAgent setup …` (a form, then a PR, no AI),
+`@IMGAgent signoff` and your words, `@IMGAgent help`. Only
 people with write access are answered; commands in code blocks or quotes are ignored.
 
 ## 8. Releases and Zenodo
 
-- Add `CITATION.cff` (*Cite this repository*, and Zenodo's metadata).
+- Add `CITATION.cff` (*Cite this repository*, and Zenodo's metadata): `@IMGAgent setup citation`, and
+  `citation.yml` to validate it on changes.
+- **Licences:** `@IMGAgent setup reuse` writes `REUSE.toml` and the licence texts in `LICENSES/`; `reuse.yml`
+  checks them.
 - Once per repository: log in at zenodo.org with GitHub → *GitHub* → switch the repository **On**. Every
   published GitHub release is then archived with a **version DOI**; put the **concept DOI** badge in the README.
   Practise on sandbox.zenodo.org (real DOIs can't be deleted).
@@ -234,12 +236,12 @@ people with write access are answered; commands in code blocks or quotes are ign
 
 ## 10. Updating aisignoff
 
-The org pins aisignoff in the reusable workflows (`aisignoff-version` in `file-signoff.yml` and
-`pr-signoff.yml`). On 24 November 2026 the default is **0.18.0**; raise both to **0.20.1** to get 0.19's rules
-(below), and the fixes and syntax colours of 0.19.1–0.20.1. Raising it there updates every repository at once:
-read the changelog for **Breaking** first ([Upgrading](https://industrial-mathematics-group.github.io/aisignoff/migrating/)).
-Keep the Julia docs step (`AISIGNOFF_VERSION`, already 0.20.1 in the four Julia repositories) and the
-playground's own workflows on the same release. (aisignoff went back to 0.x: 0.15.0 follows 1.0.0rc10.)
+The org's version is set in one place: `ORG_VERSION` in `actions/setup-aisignoff/action.yml` of `.github`
+(**0.24.0** since 26 November 2026). Every reusable workflow installs aisignoff through that action, and so does
+the Julia docs step above, so raising it updates every repository at once: read the changelog for **Breaking**
+first ([Upgrading](https://industrial-mathematics-group.github.io/aisignoff/migrating/)). A repository can pin
+another release with `aisignoff-version`. Keep the playground's own example workflows on the same release.
+(aisignoff went back to 0.x: 0.15.0 follows 1.0.0rc10.)
 
 | From | What changed for a repository |
 |---|---|
@@ -248,22 +250,26 @@ playground's own workflows on the same release. (aisignoff went back to 0.x: 0.1
 | 0.17 | `freeze` and `SIGNOFF.snapshot.json` removed (`unfreeze.py` converts); blame cache instead |
 | 0.18 | `attest -a` writes a record file in `reviews/` (`--signoff`: into `SIGNOFF.toml`); `correct`, `gc` |
 | 0.19 | AI reviews count in the order recorded; `[review] dir` protected; only top-level `.toml` in `reviews/` are records; a record file comes in a PR of its own, with a report the PR adds |
+| 0.21–0.23 | Needs git 2.34 or later; unknown keys in `SIGNOFF.toml` are errors (a typo no longer passes silently); fixes for files git converts and binary files |
+| 0.24 | `badge --commits` (the Signoff-Badges workflow) |
 
 ## Red check? Quick fixes
 
 | Symptom | Fix |
 |---|---|
-| File-signoff yellow "aisignoff not set up" | Merge the `aisignoff-setup` PR (or `aisignoff init`) |
+| File-signoff yellow "aisignoff not set up" | `@IMGAgent setup aisignoff` in an issue, merge its PR (or `aisignoff init`) |
+| IMGAgent unticked **Done** | The form has a problem, named at its top (e.g. two boxes in a *tick one* group): fix, tick **Done** again |
+| `setup …` says the file already exists | Change it with `@IMGAgent update <file>` and what to change |
 | "A1 needs a line 'AI-Review-Findings:'" | Fill in the line below the A boxes (`none` if nothing was found) |
 | "the change modifies reviews/…" | The review folder is add-only: record the new review in a new file |
 | "adds the review record … and also changes …" | Put the record file into a PR of its own; the change's own review goes into its description |
 | `lint` fails on `SIGNOFF.snapshot.json` | Run `unfreeze.py` from aisignoff's examples (with 0.17 or later) and commit the result |
 | `lint` warns about `[review] recheck` | Delete it on `main` directly (it is no longer read) |
-| No setup PR, only a branch | Org/repo setting *Allow GitHub Actions to create … pull requests*, and `pull-requests: write` in the caller |
-| Setup PR has no checks | Push a commit to `aisignoff-setup` |
 | PR-signoff fails on a `SIGNOFF.toml` change | Policy-type change: commit to `main` directly, or `allow-policy-change` |
 | Badges show "no declarations yet" forever | Merge message not set to *title and description*, or `badges` branch protected |
-| Docs build fails "No zensical.toml" | `@IMGAgent make docs`, or `zensical new` |
-| Pages 404 | *Settings → Pages → Source: GitHub Actions*; File-signoff's report is under `/signoff/` (default `pages-path`) |
-| File-signoff `pages` job: "Couldn't deploy" | Pages source, or `pages: write` / `id-token: write` missing in the caller |
+| Docs build fails "No zensical.toml" | `@IMGAgent setup docs` (or `make docs`) |
+| Pages 404 | *Settings → Pages → Source: GitHub Actions*, and a finished deploy job; the report is under `/signoff/` |
+| No report on the site | No `SIGNOFF.toml`, `signoff-report: false`, or the caller still path-filters `push` (the report then only updates with the docs) |
+| File-signoff warns about `pages`/`setup` inputs | Delete them from the caller (§2) |
+| REUSE red | A file without licence: add its folder in `REUSE.toml` (`@IMGAgent update REUSE.toml`), or a licence text missing in `LICENSES/` |
 | Required check never starts | It's path-filtered or renamed: required names are `<caller job> / <job>` |

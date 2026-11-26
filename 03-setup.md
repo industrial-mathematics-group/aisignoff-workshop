@@ -10,9 +10,10 @@ ends with ✅ **Check**: what you should see before you go on. Pascal does the s
 | A | Put the example project in | 5 min |
 | B | Repository settings | 5 min |
 | C | Install the workflows | 10 min |
-| D | `SIGNOFF.toml`: the setup pull request | 15 min |
+| D | `SIGNOFF.toml`, set up by IMGAgent | 15 min |
 | E | Protect `main` | 5 min |
 | F | Your first declared pull request | 10 min |
+| G | Optional: licences with REUSE | 10 min |
 
 ## A · Put the example project in
 
@@ -40,16 +41,11 @@ say *the example*, think of your files and declare what really happened.
 *Why:* the ticked declaration is in the pull request's description. Only a merge commit with the description
 as its message carries it into the history of `main`.
 
-**Settings → Actions → General**, scroll to **Workflow permissions**:
-
-4. **Read and write permissions**, and tick **Allow GitHub Actions to create and approve pull requests**.
-   **Save.** (If it's greyed out, the organisation already allows it.)
-
 ✅ **Check:** the settings stay after a page reload.
 
 ## C · Install the workflows
 
-Workflows are the little robots. The group has ready-made ones. Install three of them, **File-signoff last**:
+Workflows are the little robots. The group has ready-made ones. Install three of them:
 
 1. **Actions** tab. GitHub suggests workflows; scroll to **By Industrial Mathematics Group** (or search for
    `signoff`).
@@ -61,46 +57,49 @@ Workflows are the little robots. The group has ready-made ones. Install three of
 | Workflow | What it does |
 |---|---|
 | PR-signoff | Checks the ticked declaration of every pull request; sets the `ai:G*`, `human:H*`, `ai-review:A*` labels |
-| File-signoff | Checks that every file (every line) is declared; writes the report and the file badges (and, switched on in part 5, publishes the report on GitHub Pages); without `SIGNOFF.toml` it opens a pull request to set it up |
+| File-signoff | Checks that every file (every line) is declared; writes the report and the file badges |
 | Signoff-Badges | Makes badges from the declarations of merged pull requests |
 
 ✅ **Check:** **Actions** lists runs for File-signoff and Signoff-Badges. File-signoff has a yellow warning
-"aisignoff not set up". That's expected: step D.
+"aisignoff not set up". That's expected: step D sets it up.
 
-## D · `SIGNOFF.toml`: the setup pull request
+## D · `SIGNOFF.toml`, set up by IMGAgent
 
-`SIGNOFF.toml` says how the files of the repository were made. File-signoff has just written one for you, with
-`TODO` everywhere, and opened a pull request.
+`SIGNOFF.toml` says how the files of the repository were made. You don't write it by hand: **IMGAgent**, the
+group's assistant on GitHub (more of it in part 4), gives you a form with everything filled in, and turns it into
+a pull request. No AI is involved in this step.
 
-1. **Pull requests** tab → **Set up aisignoff (SIGNOFF.toml with TODOs to fill in)**. Read its description.
-2. **Files changed** → on `SIGNOFF.toml` click **⋯ → Edit file**.
-3. At the end, replace the `TODO`s with what is true for most of the files (see
-   [HOW-THIS-WAS-MADE.md](sample-project/HOW-THIS-WAS-MADE.md); for your own repository, what is true for most
-   of your files), with your name:
+1. **Issues → New issue** (choose **Blank issue** if GitHub offers forms). Title: `Set up AI signoff`. Text:
 
-   ```toml
-   # Default for everything
-   [[annotations]]
-   path = "**"
-   AI-Generation = "G0"
-   Human-Review = "H2"
-   AI-Review = "A0"
-   Reviewed-by = ["Jane Doe"]
+   ```text
+   @IMGAgent setup aisignoff
    ```
 
-   Leave the rest as it is. Look at `[history]` (every line is declared by the pull request that brought it)
-   and the comment on review findings on the way. The commented `exclude` line mentions `reviews/**`: you don't
-   need it, the review folder `reviews/` is left out by itself (part 4).
-4. **Commit changes… → Commit directly to the `aisignoff-setup` branch → Commit changes.**
-5. Back on the pull request's **Conversation** tab, wait for the checks (about a minute).
-   **PR-signoff** is red: in the description **G0** and **A0** are already ticked (a tool wrote the file), and
-   `Responsible person:` names you. **Tick your human review** (you just read the file: **H2**).
-6. Both checks green: **Merge pull request → Confirm merge.**
+   **Create.**
+2. After a few seconds IMGAgent answers with a form: the default declaration for every file (`**`), the git
+   history, and a few more settings. The defaults are what is true for most of the example's files
+   (see [HOW-THIS-WAS-MADE.md](sample-project/HOW-THIS-WAS-MADE.md)): **G0** (written by a person), **H2**
+   (read line by line), **A0** (no independent AI review), and you as `Reviewed-by`. For your own repository,
+   choose what is true for most of *your* files.
+   - **Boxes:** tick or untick them right in the comment.
+   - **Values** between backticks (such as your name): open the comment's **⋯ → Edit**, change the text
+     between the backticks, **Update comment**. Your full name is nicer than your GitHub login.
+3. Leave the rest as it is. Look at **History** on the way: every line is declared by the pull request that
+   brought it.
+4. Tick **Done: create the pull request** at the bottom of the form. A moment later IMGAgent replies with a link
+   to the pull request **Set up SIGNOFF.toml**. (If something in the form can't be used, it unticks **Done** and
+   says why at the top: fix it and tick **Done** again.)
+5. Open the pull request. **Files changed** shows the new `SIGNOFF.toml`: check that it says what you chose.
+6. Wait for the checks (about a minute). **PR-signoff** is red: in the description **G0** is already ticked
+   (IMGAgent filled in a form, no AI), and `Responsible person:` names you. **Tick your human review** (you just
+   read the file: **H2**).
+7. Both checks green: **Merge pull request → Confirm merge.**
 
 ✅ **Check:** `SIGNOFF.toml` is on `main`. **Actions → File-signoff →** the newest run on `main` is green, and its
 summary shows a folder tree with the levels.
 
-The other folders (`analysis/`, `results/`, `paper/`) are declared differently: that's part 4, with IMGAgent.
+The other folders (`analysis/`, `results/`, `paper/`) were made differently: you declare them in part 4, with
+IMGAgent too.
 
 ## E · Protect `main`
 
@@ -160,6 +159,22 @@ on `main` carries your ticked declaration in its message.
 
 **Your repository is now set up like the group's.** The [maintainer cheat sheet](maintainer-cheat-sheet.md) has
 all of this on two pages, for the next repository.
+
+## G · Optional: licences with REUSE (10 min)
+
+[REUSE](https://reuse.software) checks that every file says who holds the copyright and under which licence it
+may be used, so that others know what they may reuse. Again IMGAgent writes the files from a form.
+
+1. In a new issue, write `@IMGAgent setup reuse`. The form has the copyright line (year and owner) and the common
+   licences as boxes, each with the folders it applies to (`.` is everything). For the example, tick **MIT** for
+   `.`. For real data or texts, CC BY 4.0 for their folders is a common choice.
+2. Tick **Done**. The pull request **Set up REUSE.toml** adds `REUSE.toml` and the licence texts in
+   `LICENSES/`. Tick your human review, merge.
+3. **Actions → New workflow → REUSE → Configure → Commit changes… → Create a new branch … and start a pull
+   request.** Declare it like any file you copied from the group's templates (they were written with Claude):
+   **G3**, **Claude Opus**, **H1** (you read it), **A0**. Merge once green.
+
+✅ **Check:** the REUSE run on `main` is green ("Congratulations! Your project is compliant").
 
 ---
 
