@@ -70,7 +70,7 @@ you (`Responsible person: @you`) and you tick.
 |---|---|---|
 | A pull request (the usual way) | The ticked boxes in its description, which become the merge commit's message | You, by ticking |
 | Files that are already in `main` | `SIGNOFF.toml`, the file **a person signs off**: the paths and their levels, corrections, your reviews | **IMGAgent** (`@IMGAgent signoff` in an issue) or the issue form *Signoff: declare or attest files*, and you check and merge |
-| An independent AI review recorded later | The **review folder** `reviews/`: the report and a small record file, in a pull request of its own | You (or the reviewing agent), never the agent that wrote the change |
+| An independent AI review recorded later | The **review folder** `reviews/`: a small record file (and the report, from A2), in a pull request of its own | **IMGAgent** (`@IMGAgent review` in an issue) or another reviewing agent, never the agent that wrote the change; you check and merge |
 
 You never have to edit `SIGNOFF.toml` by hand, except once when you set it up (part 3). The review folder is
 add-only: a review stays as it was recorded, and a later review goes into a new file.

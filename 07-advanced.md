@@ -58,8 +58,8 @@ writes `SIGNOFF.toml` or the review folder. `aisignoff init` points agents to it
 it only reviews and changes nothing, and rates each finding (`trivial` to `critical`). For an open pull request
 it gives the lines to copy into the description (A2: tick the box, name the model and its report, fill in
 `AI-Review-Findings:`). For a change that has landed, it records the review as a report and a record file in
-`reviews/`, in a pull request of its own: exactly what you did by hand in part 4. Use a different model than
-the one that wrote the change, and a new session.
+`reviews/`, in a pull request of its own: like IMGAgent's quick review in part 4, but A2, with the report.
+Use a different model than the one that wrote the change, and a new session.
 
 **Claude on your computer:** the Claude desktop app works the same way, but runs on your own computer, with
 your files and your tools. The result is still a branch and a pull request.
