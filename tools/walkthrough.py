@@ -6,8 +6,7 @@ is the title and description, and main is linted like File-signoff does it.
 Usage (from the repository root, with the aisignoff release under test installed):
 
     curl -sO https://raw.githubusercontent.com/industrial-mathematics-group/.github/main/.github/PULL_REQUEST_TEMPLATE.md
-    python tools/walkthrough.py /tmp/walkthrough sample-project PULL_REQUEST_TEMPLATE.md \
-        templates/CITATION.cff templates/signoff-release.yml
+    python tools/walkthrough.py /tmp/walkthrough sample-project PULL_REQUEST_TEMPLATE.md templates/signoff-release.yml
 
 It prints one line per check (OK or BAD, with the labels PR-signoff would set), the folder tree at the end,
 and exits non-zero if a check didn't come out as the workshop says.
@@ -135,33 +134,36 @@ direct("Add the coffee cooling project", files)
 for wf in ("pr-signoff", "signoff-badges", "file-signoff"):
     direct(f"Create {wf}.yml", {f".github/workflows/{wf}.yml": f"# {wf} caller\nname: {wf}\n"})
 
-# 3 D: the setup pull request, as File-signoff opens it: SIGNOFF.toml from aisignoff init with TODOs
-git("checkout", "-q", "-B", "aisignoff-setup", "origin/main")
-sh("aisignoff", "init", "-g", "TODO", "-H", "TODO", "-a", "TODO", "--history", "--no-agents-md")
-git("add", "SIGNOFF.toml")
-git("commit", "-q", "-m", "Set up aisignoff with the organisation's defaults")
-git("push", "-q", "origin", "aisignoff-setup")
-p = sh("aisignoff", "lint", check=False)
-results.append(("setup branch with TODOs (File-signoff red)", p.returncode, 1, p.returncode != 0, "", (p.stdout + p.stderr).strip()))
+# 3 D: "@IMGAgent setup aisignoff": the form's defaults (G0, H2, A0, the requester as Reviewed-by, [history] with
+# the default branch, merge, baseline), written as IMGAgent writes them, in a pull request declared G0 by the app
+SIGNOFF_FROM_FORM = """\
+# AI declarations for this repository: generation (G0-G3), human review (H0-H3)
+# and AI review (A0-A3). Set up by IMGAgent; check with: aisignoff lint
+# The LAST annotation that matches a file wins.
+version = 4
 
+[[annotations]]
+path = "**"
+AI-Generation = "G0"
+Human-Review = "H2"
+AI-Review = "A0"
+Reviewed-by = ["Jane Doe"]
 
-def fill_todos():
-    sh("aisignoff", "init", "-g", "TODO", "-H", "TODO", "-a", "TODO", "--history", "--no-agents-md")
-    s = (repo / "SIGNOFF.toml").read_text()
-    s = s.replace('AI-Generation = "TODO"', 'AI-Generation = "G0"').replace('Human-Review = "TODO"', 'Human-Review = "H2"')
-    s = s.replace('AI-Review = "TODO"', 'AI-Review = "A0"').replace('Reviewed-by = ["TODO"]', 'Reviewed-by = ["Jane Doe"]')
-    (repo / "SIGNOFF.toml").write_text(s)
-
-
-setup_desc = desc(["G0", "A0"], responsible="jane-doe", what="Set up aisignoff")
-git("checkout", "-q", "main")
-git("branch", "-q", "-D", "aisignoff-setup")
-pull_request("setup PR, only G0 and A0 ticked (step D.5: red)", "Set up aisignoff",
-             fill_todos, setup_desc, author="github-actions[bot]", expect=1, merge=False)
+[history]
+enabled = true
+default-branch = "main"
+merge-method = "merge"
+undeclared = "baseline"
+"""
+setup_pr = lambda files: (lambda: [write(path, text) for path, text in files.items()])
+pull_request("IMGAgent setup aisignoff, H not ticked yet (D.6: red)", "Set up SIGNOFF.toml",
+             setup_pr({"SIGNOFF.toml": SIGNOFF_FROM_FORM}),
+             desc(["G0", "A0"], responsible="jane-doe", what="Set up SIGNOFF.toml"), author="imgagent[bot]",
+             expect=1, merge=False)
 PR[0] -= 1
-pull_request("setup PR, H2 ticked (step D.6)", "Set up aisignoff (SIGNOFF.toml with TODOs to fill in)",
-             fill_todos, desc(["G0", "H2", "A0"], responsible="jane-doe", what="Set up aisignoff"),
-             author="github-actions[bot]")
+pull_request("IMGAgent setup aisignoff, H2 ticked (D.7)", "Set up SIGNOFF.toml",
+             setup_pr({"SIGNOFF.toml": SIGNOFF_FROM_FORM}),
+             desc(["G0", "H2", "A0"], responsible="jane-doe", what="Set up SIGNOFF.toml"), author="imgagent[bot]")
 
 # 3 F: badges in the README
 BADGES = "[![AI generation](https://img.shields.io/endpoint?url=...)](...)\n" * 4
@@ -177,6 +179,21 @@ PR[0] -= 1
 pull_request("README badges, nothing ticked (F.2: red)", "Add badges", add_badges, desc([]), expect=1, merge=False)
 PR[0] -= 1
 pull_request("README badges, G0 H2 A0 (F.4)", "Add the badges to the README", add_badges, desc(["G0", "H2", "A0"]))
+
+# 3 G (optional): "@IMGAgent setup reuse" (MIT for everything), then the REUSE workflow from the template
+REUSE_FROM_FORM = """version = 1
+
+[[annotations]]
+path = "**"
+SPDX-FileCopyrightText = "2026 Jane Doe"
+SPDX-License-Identifier = "MIT"
+"""
+pull_request("IMGAgent setup reuse (G0 H2 A0)", "Set up REUSE.toml",
+             setup_pr({"REUSE.toml": REUSE_FROM_FORM, "LICENSES/MIT.txt": "MIT License\n\nCopyright (c) ...\n"}),
+             desc(["G0", "H2", "A0"], responsible="jane-doe", what="Set up REUSE.toml"), author="imgagent[bot]")
+pull_request("REUSE workflow from the template (G3 Claude Opus H1 A0)", "Add the REUSE workflow",
+             setup_pr({".github/workflows/reuse.yml": "# reuse caller\nname: REUSE\n"}),
+             desc(["G3", "Claude Opus", "H1", "A0"]))
 
 
 # 4 exercise 2: three IMGAgent signoff pull requests (aisignoff annotate, as IMGAgent runs it)
@@ -254,20 +271,34 @@ pull_request("edit of an earlier review (add-only: red)", "Fix the review", edit
              expect=1, merge=False)
 PR[0] -= 1
 
-# 5: switch pages on in file-signoff.yml
-pull_request("Pages switch (G0 H1 A0)", "Publish the report on GitHub Pages",
-             lambda: write(".github/workflows/file-signoff.yml", "# file-signoff caller\nname: file-signoff\n# pages: true\n"),
-             desc(["G0", "H1", "A0"]))
+# 5: "@IMGAgent setup docs" (zensical.toml and a placeholder docs/index.md), then the Zensical docs workflow
+pull_request("IMGAgent setup docs (G0 H2 A0)", "Set up zensical.toml",
+             setup_pr({"zensical.toml": '[project]\nsite_name = "workshop-jane-doe"\n'
+                                        'site_url = "https://www.industrial-mathematics.org/workshop-jane-doe/"\n',
+                       "docs/index.md": "# workshop-jane-doe\n\nHow fast does coffee cool?\n"}),
+             desc(["G0", "H2", "A0"], responsible="jane-doe", what="Set up zensical.toml"), author="imgagent[bot]")
+pull_request("Zensical docs workflow from the template (G3 Claude Opus H1 A0)", "Add the Zensical docs workflow",
+             setup_pr({".github/workflows/zensical-docs.yml": "# zensical-docs caller\nname: Zensical docs\n"}),
+             desc(["G3", "Claude Opus", "H1", "A0"]))
 
-# 6: CITATION.cff and signoff-release.yml
-pull_request("CITATION.cff (G1 Claude Opus H2 A0)", "Add a citation file",
-             lambda: write("CITATION.cff", Path(sys.argv[4]).read_text()), desc(["G1", "Claude Opus", "H2", "A0"]))
+# 6: "@IMGAgent setup citation", then signoff-release.yml
+CITATION_FROM_FORM = """cff-version: 1.2.0
+message: "If you use these files, please cite them as below."
+type: software
+title: "workshop-jane-doe"
+authors:
+  - given-names: Jane
+    family-names: Doe
+"""
+pull_request("IMGAgent setup citation (G0 H2 A0)", "Set up CITATION.cff",
+             setup_pr({"CITATION.cff": CITATION_FROM_FORM}),
+             desc(["G0", "H2", "A0"], responsible="jane-doe", what="Set up CITATION.cff"), author="imgagent[bot]")
 pull_request("signoff-release.yml, A1 without findings (red)", "Attach the report to releases",
-             lambda: write(".github/workflows/signoff-release.yml", Path(sys.argv[5]).read_text()),
+             lambda: write(".github/workflows/signoff-release.yml", Path(sys.argv[4]).read_text()),
              desc(["G3", "Claude Opus", "H1", "A1"], a1_model="GPT Sol (OpenAI)"), expect=1, merge=False)
 PR[0] -= 1
 pull_request("signoff-release.yml (G3 Claude Opus H1 A1, findings none)", "Attach the report to releases",
-             lambda: write(".github/workflows/signoff-release.yml", Path(sys.argv[5]).read_text()),
+             lambda: write(".github/workflows/signoff-release.yml", Path(sys.argv[4]).read_text()),
              desc(["G3", "Claude Opus", "H1", "A1"], a1_model="GPT Sol (OpenAI)", findings="none"))
 
 # 7.1: an agent's pull request (G3, its model; the person ticks H1)

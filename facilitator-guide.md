@@ -5,7 +5,7 @@
 For Pascal (or whoever runs the session). Participants don't need this page.
 
 **Format:** a short introduction, then everyone sets up their own repository in parallel while you do the same
-steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then the advanced part.
+steps on this repository on the projector. Then IMGAgent, the documentation site with the report, and Zenodo, then the advanced part.
 
 ## Before the workshop
 
@@ -23,23 +23,21 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
 
 - [ ] *Organisation settings → Member privileges → Repository creation:* members may create **public**
       repositories (or create the `workshop-<name>` repositories yourself and make each person admin).
-- [ ] *Organisation settings → Actions → General:* allow the actions the workflows use (`actions/*`), and under
-      *Workflow permissions* **Read and write** with **Allow GitHub Actions to create and approve pull
-      requests**. Without it the File-signoff setup pull request can't be opened (step 3 D).
+- [ ] *Organisation settings → Actions → General:* allow the actions the workflows use (`actions/*`, and
+      `fsfe/reuse-action` for the optional REUSE step).
 - [ ] The `.github` repository is public and its *Settings → Actions → General → Access* is **Accessible from
       repositories in the organization**.
 - [ ] *Organisation settings → Third-party access → OAuth app policy:* if it is restricted, approve **Zenodo**
       and **Zenodo Sandbox** (they are separate apps), or participants can't see their organisation repositories
       on Zenodo (part 6). The first participant who requests access triggers an approval request you can grant.
 
-### aisignoff version (admin, by Thursday)
+### aisignoff and IMGAgent (by Thursday)
 
-- [ ] The workshop follows **aisignoff 0.20.1**. The organisation's reusable workflows pin **0.18.0** (24 November
-      2026): raise `default: "0.18.0"` to `"0.20.1"` under `aisignoff-version` in **both**
-      `.github/workflows/file-signoff.yml` and `.github/workflows/pr-signoff.yml` of
-      `industrial-mathematics-group/.github` (commit to `main`). Every exercise also passes on 0.18.0; what differs
-      is only that 0.18.0 doesn't yet refuse a record file next to other changes, and the bug fixes of
-      0.19.1–0.20.1 and the syntax colours of the report's line view are missing.
+- [ ] The workshop follows **aisignoff 0.24.0**, the organisation's version since 26 November 2026
+      (`ORG_VERSION` in `actions/setup-aisignoff/action.yml` of `industrial-mathematics-group/.github`). Nothing
+      to raise.
+- [ ] IMGAgent runs the release with the `setup` commands (`@IMGAgent help` lists `setup reuse|aisignoff|citation|docs`).
+      Try `@IMGAgent setup aisignoff` and `setup docs` in a test repository: the form, **Done**, the pull request.
 - [ ] Check that IMGAgent records an AI review with its findings (part 4, optional A1): it should ask for them
       when they are missing, as the issue form does.
 
@@ -52,7 +50,7 @@ steps on this repository on the projector. Then IMGAgent, Pages and Zenodo, then
 - [ ] Dry run: create `workshop-test`, go through parts 3 to 6 end to end with the pages open, then delete it.
       It shows how long each step takes with the current GitHub UI. Without GitHub, `tools/walkthrough.py`
       replays every pull request of parts 3 to 7 against the aisignoff release you have installed (usage at its
-      top); with 0.20.1 all 33 checks come out as the pages say.
+      top); with 0.24.0 all checks come out as the pages say.
 - [ ] Print the [cheat sheet](cheat-sheet.pdf) for everyone, and the [maintainer cheat sheet](maintainer-cheat-sheet.pdf)
       for those who will maintain repositories.
 
@@ -65,7 +63,8 @@ step by step with the participants. Differences from their repositories:
   anyway.
 - **Step D:** be honest about this repository: everything in it, the guide and the example, was written by
   Claude (Claude Opus 5.5) and checked by you. A fitting `**` default is **G3 · H1 (or what you did) · A0**,
-  with `Assisted-by = ["Claude Opus 5.5 (Anthropic)"]` added to the annotation. A good moment to mention
+  with `Claude Opus 5.5 (Anthropic)` as `Assisted-by`: change them in the form on the projector, which shows how
+  values are edited. A good moment to mention
   `exclude` too (files that need no declaration, such as `docs/build/**`; the review folder `reviews/` needs no
   entry, it is left out by itself). The participants'
   example story (G0/G1/G2/G3 by folder) is made up; their repositories role-play it.
@@ -76,7 +75,9 @@ step by step with the participants. Differences from their repositories:
 
 Participants who bring a real repository follow the same steps with their own files: they skip step 3 A, and
 declare what really happened (no role-play story). Watch for: step D's `**` default must be true for most of
-*their* files, existing workflows may add required checks of their own, and a private repository stops at part 4.
+*their* files, existing workflows may add required checks of their own, a private repository stops at part 4, and a
+repository that already has `SIGNOFF.toml`, a docs site or `CITATION.cff` gets "already exists" from
+`setup`: skip that step.
 
 ### The advanced part
 
@@ -97,25 +98,25 @@ declare what really happened (no role-play story). Watch for: step D's `**` defa
 | 0:00 | [1 GitHub in five words](01-git-and-github.md) | Pictures only. Show the history of an existing repository |
 | 0:10 | [2 AI signoff](02-ai-signoff.md) | The levels table and "who is responsible" are the core |
 | 0:20 | [3 Set up](03-setup.md) A–C | Everyone in step, wait at each ✅ check. Hands up when done |
-| 0:40 | [3 Set up](03-setup.md) D | The longest step. Explain `[history]` and `[review]` while the checks run |
+| 0:35 | [3 Set up](03-setup.md) D | The IMGAgent form: show *⋯ → Edit* for the values once on the projector. Explain `[history]` while the checks run |
 | 0:55 | [3 Set up](03-setup.md) E–F | The red→green moment in F is the payoff: give it time |
 | 1:10 | Break | |
 | 1:20 | [4 IMGAgent](04-imgagent.md) | Ask first (instant gratification), then signoff one folder at a time. The A2 review pull request is optional: do it on the projector if time is short |
-| 1:40 | [5 Pages](05-pages.md) | Two commented lines in each place: check indentation on screens. While the pages job runs: explain the findings axis and F- |
+| 1:40 | [5 Website](05-pages.md) | `setup docs`, then the workflow as a pull request. While the deploy job runs: explain the findings axis and F- |
 | 1:55 | [6 Zenodo](06-zenodo.md) | Sandbox only. Archiving takes a few minutes: start the release, then talk |
 | 2:15 | [7.1 Basic agent workflow](07-advanced.md#71--a-basic-agent-workflow-claude-on-the-web) | Live: task → pull request → inspect → merge. About 15 min |
 | 2:30 | [7.2 Showcase](07-advanced.md#72--showcase-an-advanced-setup) | Demonstration only, no setup. About 15 min |
 
-Short on time: skip step F's "break it on purpose", the optional parts of 4 (show the A2 review pull request on
-the projector instead), and step 4 of part 6.
+Short on time: skip step F's "break it on purpose", step G (REUSE), the optional parts of 4 (show the A2 review
+pull request on the projector instead), and step 4 of part 6.
 
 ## What to say at each step (talking points)
 
 - **3 B, merge settings:** "The declaration is in the pull request's description. Only a merge commit with the
   description as its message carries it into history. Squash or rebase would drop it."
-- **3 C, File-signoff last:** it reacts to the push of its own file by opening the setup pull request.
-- **3 D:** the pull request was opened by a bot, so its checks start only with the first push to the branch
-  (the edit). `Responsible person:` makes the human who triggered it responsible.
+- **3 D:** IMGAgent only fills a template, no AI: that's why the pull request is G0. It was opened by an app,
+  and `Responsible person:` makes the human who filled in the form responsible. The same form approach sets up
+  REUSE (G), the docs site (5) and the citation (6).
 - **3 E:** checks can only be required once they have run, which is why protection comes after D. Leave the
   bypass list empty and say why: on the playground, Claude with your admin login pushed straight to `main`
   because *Repository admin* was an "always" bypass, and a bypass also lifts force-push protection. "For pull
@@ -127,7 +128,8 @@ the projector instead), and step 4 of part 6.
   pull requests, which you merge); AI reviews go into `reviews/`, add-only, in pull requests of their own that
   need no declaration.
 - **5:** the report is public with the text of each file. The header's two flags (share without independent AI
-  review, share with an open major or critical finding) are the quickest summary of a repository. One Pages site per repository, and `pages: true` replaces it: not for repositories with a docs site.
+  review, share with an open major or critical finding) are the quickest summary of a repository. The report
+  lives in the docs site, so a repository keeps one Pages site for both.
 - **6:** version DOI for a paper, concept DOI for the badge. Real DOIs are forever.
 - **7.1:** go through *Files changed* slowly, comment on one line, let the agent answer with a new commit.
   Then tick an honest human review: "the AI wrote it" isn't one.
@@ -139,19 +141,19 @@ the projector instead), and step 4 of part 6.
 | Symptom | Cause and fix |
 |---|---|
 | No "By Industrial Mathematics Group" section under *Actions* | The repository isn't in the organisation, or the `.github` repository's templates aren't visible. Copy the workflow from `industrial-mathematics-group/.github/workflow-templates/` by hand (replace `$default-branch` with `main`) |
-| File-signoff ran, but no setup pull request | *Allow GitHub Actions to create … pull requests* is off (organisation or repository); the branch `aisignoff-setup` exists and the job summary links to a prefilled pull request. Turn the setting on, delete the branch, *Run workflow* |
-| The setup pull request has no checks | Nothing was pushed to `aisignoff-setup` yet: the edit of step D starts them |
-| File-signoff red on the setup pull request | A `TODO` left, a typo in a level (`"G 0"`), or `Reviewed-by` not in `[" "]` |
+| IMGAgent's form doesn't come | IMGAgent isn't installed on the repository, or the command is in a code box. `@IMGAgent help` tests it |
+| IMGAgent unticked **Done** | The problem is at the top of the form: usually two ticked boxes in a *tick one* group, or a value without backticks after editing. Fix it, tick **Done** again |
+| "already has a `SIGNOFF.toml`" (or another file) | The file exists, e.g. in an own repository: skip the step, or change it with `@IMGAgent update SIGNOFF.toml` |
 | A required check can't be found in the ruleset | It hasn't run in this repository yet, or the name differs: it's `pr-signoff / check`, `file-signoff / lint` |
 | PR-signoff stays red after ticking | Two G boxes, G1–G3 without a model, no H ticked, A1–A3 without `AI-Review-Findings:`, or the page wasn't reloaded. **Details** says which |
 | The A2 review pull request is red | The record file's `commit` isn't a commit of `main` (copy the full hash from the file's **History**), the report path in `AI-Reviewed-by` differs from the report's name, the report is missing from the pull request, or the pull request also changes something outside `reviews/` |
 | A correction to a review is red | `reviews/` is add-only: a changed or deleted file there fails. Close it and record the corrected review in a new file |
 | IMGAgent doesn't answer | Not installed on that repository (check *Settings → GitHub Apps*), the command is inside a code box or quote, or no folder was named. `@IMGAgent help` tests it |
-| IMGAgent's signoff refuses | No `SIGNOFF.toml` on `main` yet (step D not merged), or a path that doesn't exist on `main` |
+| IMGAgent's signoff refuses | No `SIGNOFF.toml` on `main` yet (step D's pull request not merged), or a path that doesn't exist on `main` |
 | Second signoff pull request shows "This branch has conflicts" | Two requests open at once. Merge one, then ask again with `@IMGAgent signoff` in the second issue, or **Resolve conflicts**: keep both entries, delete the `<<<<<<<`, `=======`, `>>>>>>>` lines |
-| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the pages job of File-signoff hasn't finished; the report is under `/signoff/` (the default `pages-path`) |
-| No pages job in File-signoff | `pages: true` still commented out, or `with:` not lined up with `uses:` (the run then fails with an invalid workflow) |
-| pages job red: "Couldn't deploy" | Pages source not *GitHub Actions*, or `pages: write` / `id-token: write` still commented out |
+| Pages: 404 | *Settings → Pages → Source* is not *GitHub Actions*, or the deploy job of Zensical docs hasn't finished; the report is under `/signoff/` |
+| docs / build red on the workflow pull request | No `zensical.toml` on `main` yet: merge the `setup docs` pull request first, then update the workflow pull request's branch |
+| The site has no report | No `SIGNOFF.toml` on `main`, or the report step warned (its summary says why); the site still deploys |
 | Zenodo doesn't list the repository | Organisation access for Zenodo (Sandbox) not granted; **Sync now** after granting |
 | Zenodo shows no new record | The release was saved as a draft, or the repository was switched on after the release. Publish a new release (`v0.1.1`) |
 

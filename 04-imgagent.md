@@ -1,8 +1,8 @@
-[← 3 Set up your repository](03-setup.md) · **4 IMGAgent** · [5 The report on GitHub Pages →](05-pages.md)
+[← 3 Set up your repository](03-setup.md) · **4 IMGAgent** · [5 A website with the report →](05-pages.md)
 
 # 4 · IMGAgent
 
-**IMGAgent** is the group's assistant on GitHub. You talk to it by writing `@IMGAgent` and a command in an
+**IMGAgent** is the group's assistant on GitHub; you met it in part 3, setting up `SIGNOFF.toml`. You talk to it by writing `@IMGAgent` and a command in an
 issue (or a comment in one). It answers questions about the files of a repository, and it writes declarations
 into `SIGNOFF.toml` for you. It only answers people with write access to the repository, and it never changes
 `main` by itself: whatever it changes comes as a pull request that you check and merge.
@@ -15,6 +15,7 @@ Pascal has installed it on your workshop repository. Check: **Settings → GitHu
 | `@IMGAgent signoff` and your words | Records how files were made and reviewed: a pull request that changes `SIGNOFF.toml` |
 | `@IMGAgent update <folders> with <folders>` and a task | Edits files in the first folders, reading the others; opens a pull request |
 | `@IMGAgent make docs` | Writes a documentation site in `docs/`; opens a pull request |
+| `@IMGAgent setup aisignoff`, `reuse`, `docs` or `citation` | A form for `SIGNOFF.toml`, `REUSE.toml`, `zensical.toml` or `CITATION.cff`, filled in with defaults; ticking **Done** opens a pull request, without AI (you used it in part 3) |
 | `@IMGAgent help` | The list of commands |
 
 Folders are written as paths, separated by commas: `notes`, `notes, analysis`, `analysis/fit_cooling.py`.
@@ -155,4 +156,4 @@ change, tick your human review, and merge, or close it.
 
 ---
 
-[← 3 Set up your repository](03-setup.md) · [5 The report on GitHub Pages →](05-pages.md)
+[← 3 Set up your repository](03-setup.md) · [5 A website with the report →](05-pages.md)

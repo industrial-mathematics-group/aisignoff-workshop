@@ -60,6 +60,10 @@ that changes `SIGNOFF.toml`: check *Files changed*, tick your human review, merg
 An AI review it records needs its findings (`A1, findings: none`).
 Without AI: *Issues → New issue → Signoff: declare or attest files*. More: `@IMGAgent help`.
 
+**Setting up a file:** `@IMGAgent setup aisignoff` (`SIGNOFF.toml`), `setup reuse` (`REUSE.toml` and `LICENSES/`),
+`setup docs` (a documentation site) or `setup citation` (`CITATION.cff`) answers with a form, filled in with
+defaults. Change what you need (tick boxes; values via *⋯ → Edit*), tick **Done**: a pull request, declared G0.
+
 ## An AI review after the merge
 
 A different model's review (A2) of files already in `main`: one pull request that **only adds** to `reviews/`
@@ -85,7 +89,7 @@ changes · page not reloaded.
 
 ## Releases and DOIs (Zenodo)
 
-1. Once: log in at zenodo.org with GitHub → *GitHub* → **Sync now** → switch the repository **On**; add `CITATION.cff`.
+1. Once: log in at zenodo.org with GitHub → *GitHub* → **Sync now** → switch the repository **On**; add `CITATION.cff` (`@IMGAgent setup citation`).
 2. Each time: **Releases → Draft a new release** → new tag `v1.0.0` → **Publish release**.
 3. Zenodo archives it and mints a DOI: **version DOI** (cite in papers) + **concept DOI** (always the newest; for the badge).
 4. Practise on sandbox.zenodo.org: real DOIs can't be deleted.
