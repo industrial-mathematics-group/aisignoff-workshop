@@ -18,7 +18,9 @@ Please do this before Friday, 27 November. It takes five minutes. If something d
 
 Good to know about your own repository:
 
-- It should be **public** for parts 5 and 6 (GitHub Pages and Zenodo); everything else works in a private one too.
+- It should be **public** for parts 5 and 6 (GitHub Pages and Zenodo); everything else works in a private one too,
+  except that on GitHub Free a private repository can't protect `main` (part 3 E): the checks still run, but can't
+  block a merge.
 - After a transfer, the old address redirects to the new one, and links keep working.
 - If it already has workflows, a pull request template or issue templates of its own, tell Pascal beforehand.
 - You'll declare **your real files** instead of the example project, so think about how they were made.

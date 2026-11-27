@@ -16,7 +16,7 @@ steps on this repository on the projector. Then IMGAgent, the documentation site
       repository into it, Zenodo Sandbox login.
 - [ ] Ask who brings their own repository, and look at those beforehand: existing workflows, a PR template
       or `.github/ISSUE_TEMPLATE/` of their own (then the signoff issue form must be copied in, see the
-      maintainer cheat sheet §7), private (no Pages or Zenodo), or already a `SIGNOFF.toml`.
+      maintainer cheat sheet §7), private (no Pages or Zenodo, and on GitHub Free no ruleset in part 3 E), or already a `SIGNOFF.toml`.
 - [ ] Invite everyone to **industrial-mathematics-group** as members.
 
 ### Organisation settings (admin)
@@ -76,7 +76,7 @@ step by step with the participants. Differences from their repositories:
 
 Participants who bring a real repository follow the same steps with their own files: they skip step 3 A, and
 declare what really happened (no role-play story). Watch for: step D's `**` default must be true for most of
-*their* files, existing workflows may add required checks of their own, a private repository stops at part 4, and a
+*their* files, existing workflows may add required checks of their own, a private repository skips the ruleset in part 3 E on GitHub Free and stops at part 4, and a
 repository that already has `SIGNOFF.toml`, a docs site or `CITATION.cff` gets "already exists" from
 `setup`: skip that step.
 
