@@ -131,7 +131,7 @@ runs by themselves).
   admin,maintain` on PR-signoff is the alternative to any bypass.
 - **Private repositories** need GitHub Team for rulesets (free for academic organisations through GitHub
   Education). On GitHub Free the checks run but can't block a merge, and there's no GitHub Pages either. Their
-  Actions minutes are limited: every org workflow takes `runs-on: aisignoff` (the self-hosted runner) in its
+  Actions minutes are limited: every org workflow takes `runs-on: private-runner` (the self-hosted runner) in its
   `with:`, see *Self-hosted runner* in the `.github` repository's SETUP.md. Not in public repositories.
 - Agents that work as their own **GitHub App** (IMGAgent, or the agent-sandbox `github-app` add-on) have their
   own identity: they aren't on the bypass list, so they can't skip the rules.
