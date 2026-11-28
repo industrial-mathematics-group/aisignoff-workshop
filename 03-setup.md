@@ -117,6 +117,11 @@ From now on, changes reach `main` only through checked pull requests.
      `lint` and choose **file-signoff / lint**.
 5. **Create.**
 
+> **Private repository?** On GitHub Free, GitHub doesn't enforce rulesets or branch protection in private
+> repositories; that needs a paid plan (GitHub Team, free for academic organisations through GitHub Education).
+> Without it, the checks still run and show red or green, but a pull request can be merged anyway,
+> and you can still commit to `main` directly. Skip this step and the check below.
+
 ✅ **Check:** on the front page, try the pencil on any file: the commit dialog no longer offers to commit to
 `main` directly.
 
